@@ -32,13 +32,22 @@ The R3ESeq includes several key steps.
 1. call cluster based on RNA 3'End Sequencing data, required input should be in bam or bed format. The method was derived from the previous publications [1-2]. 
 	- R3ESeq callcluster -i [input.file] -f [bam/bed] -o [output.file] 
 2. filter reliable clusters as putative polyadenylation sites (PASs)
-	a. using the pre-built deep-learning model 
+	
+	a. using the pre-trained deep-learning model 
+		- R3ESeq filtercluster -i [input.file] -o [output.file] --model [pre-trained model]
+	
 	b. training the owning model using annotation 
+		- R3ESeq filtercluster -i [input.file] -o [output.file] --outmodel [output.model]
+		
 3. count the sequencing reads for each putative PAS 
+	
 	a. bulk RNA-seq data 
+		- R3ESeq countbulk -bam [bam.file] -i [input.cluster] -o [output.count] -s [strandness] --win [width]
+	
 	b. SC-seq data 
+		-R3ESeq countsc -bam [bam.file] -i [input.cluster] -o [output.count] -s [strandness] --win [width]
 4. APA analyis
- 
+
 #### 3. Synopsis
 #### 4. Tutorial
 #### 5. The output
