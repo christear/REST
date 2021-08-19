@@ -36,7 +36,7 @@ The R3ESeq includes several key steps.
 	a. using the pre-trained deep-learning model 
 	- R3ESeq filtercluster -i [input.file] -o [output.file] --model [pre-trained model]
 	
-	b. training the owning model using annotation 
+	b. training the customized model using annotation 
 	- R3ESeq filtercluster -i [input.file] -o [output.file] --outmodel [output.model]
 		
 3. count the sequencing reads for each putative PAS 
@@ -45,8 +45,10 @@ The R3ESeq includes several key steps.
 	- R3ESeq countbulk -bam [bam.file] -i [input.cluster] -o [output.count] -s [strandness] --win [width]
 	
 	b. SC-seq data 
-	- R3ESeq countsc -bam [bam.file] -i [input.cluster] -o [output.count] -s [strandness] --win [width]
+	- R3ESeq countsc -bam [bam.file] -i [input.cluster] -o [output.count] -s [strandness] --win [width] -f [output.type/count or usage]
 4. APA analyis
+
+	- R3ESeq apa -i [input.count.tab] -c [condition.file] -o [output.apa.events] -a [condition.a] -b [condition.b]
 
 #### 3. Synopsis
 #### 4. Tutorial
