@@ -17,7 +17,7 @@ A toolkit for RNA 3'End Sequencing data analysis.
 
 #### 1. Introduction
 
-The R3ESeq is a toolkit for RNA 3'End Sequencing data analysis, which could be applied on both bulk RNA-seq data from mutiple 3'End Sequencing methods and common Single cell sequencing (SC-seq) data from 10X genomics Chromium System.
+The R3ESeq is a toolkit for RNA 3'End Sequencing data analysis, which could be applied on both bulk RNA-seq data from mutiple 3'End Sequencing methods and common Single cell sequencing (SC-seq) data, including 10X genomics Chromium System.
 
 The tools has been tested on:
 
