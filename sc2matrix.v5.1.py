@@ -177,7 +177,7 @@ if __name__ == '__main__':
         if if_split == 'yes':
             seeds.append(_seed)
             for ec in cig_list:
-                if ec[1] == 'M':
+                if ec[1] == 'M' or ec[1] == 'D':
                     _end = _start + ec[0]
                     cig_processed.append([_start,_end])
                     # if the junction jumped to the region with another seed 
@@ -191,6 +191,8 @@ if __name__ == '__main__':
                     _start += ec[0]
                 elif ec[1] == 'N': # junction indicate in the cigar 
                     _start += ec[0]
+                #elif ec[1] == 'I':
+                #    _start -= ec[0]
         else: 
             _end = _start
             for ec in cig_list:
