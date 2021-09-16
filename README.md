@@ -9,11 +9,15 @@ A toolkit for RNA 3'End Sequencing data analysis.
 - scikit-learn
 - pandas
 - numpy
+- pysam
+- portion
+- cigar
+- progressbar
 - bedtools
 - Perl 5
 - R 4.1
 - bash
-- umi_tools (only required for single cell sequening data analysis)
+- featureCounts
 
 #### 1. Introduction
 
@@ -26,6 +30,8 @@ The tools has been tested on:
 2, SC-seq data from 10X genomics Chomium System (https://www.10xgenomics.com/instruments/chromium-x-series)
 
 #### 2. Getting Started
+
+To run R3ESeq, plase run the data.preparation.sh to download prerequisites at first.
 
 The R3ESeq includes several key steps. 
 
