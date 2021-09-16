@@ -241,7 +241,7 @@ def callCluser (input_file,input_format,if_stranded,out_cluster,out_dis):
                            w.write(_c_line)                 
         print('[INFO] {} reads are from multiple locus'.format(_tc2))
         end_time = datetime.datetime.now()
-        print('[INFO] finished and the running timt is {}'.format(end_time - start_time))
+        print('[INFO] finished and the running time is {}'.format(end_time - start_time))
 #"""
 if len(sys.argv) < 4:
     print("Usage:python callCluster.py input_file input_format if_stranded out_cluster out_dis")
