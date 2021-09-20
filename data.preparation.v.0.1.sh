@@ -30,11 +30,6 @@ annotation=${2}
 cd ${3}
 #echo $species $annotation ${3}
 ##
-conda create -n R3ESeq python=3.6
-conda activate R3ESeq
-conda install pandas
-conda install --file requirements.txt 
-conda install pytorch torchvision torchaudio -c pytorch
 
 # deep-learning models 
 echo checking models ...
@@ -44,6 +39,16 @@ if [ ! -f DNABERT.model ]; then
 else
 	echo DNABERT.model ... OK ...
 fi
+
+echo setup DNABERT model enviroment 
+python ./DNABERT/setup.py install
+conda create -n R3ESeq python=3.6
+conda activate R3ESeq
+conda install pandas
+conda install tqdm
+conda install --file requirements.txt 
+conda install pytorch torchvision torchaudio -c pytorch
+
 
 if [[ $species =~ "human" ]]; then
 	echo downloading pre-built deep-learning model 'for' human ...
