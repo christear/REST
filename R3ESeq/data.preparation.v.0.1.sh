@@ -40,19 +40,14 @@ else
 	echo DNABERT.model ... OK ...
 fi
 
-conda create -n R3ESeq python=3.8
-conda activate R3ESeq
-
 echo setup DNABERT model enviroment 
+conda create -n R3ESeq python=3.6
+conda activate R3ESeq
 cd DNABERT
 python setup.py install
 cd ..
-
-conda install pandas
-conda install tqdm
 conda install --file requirements.txt 
 conda install pytorch torchvision torchaudio -c pytorch
-
 
 if [[ $species =~ "human" ]]; then
 	echo downloading pre-built deep-learning model 'for' human ...
