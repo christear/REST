@@ -40,10 +40,14 @@ else
 	echo DNABERT.model ... OK ...
 fi
 
-echo setup DNABERT model enviroment 
-python ./DNABERT/setup.py install
-conda create -n R3ESeq python=3.6
+conda create -n R3ESeq python=3.8
 conda activate R3ESeq
+
+echo setup DNABERT model enviroment 
+cd DNABERT
+python setup.py install
+cd ..
+
 conda install pandas
 conda install tqdm
 conda install --file requirements.txt 
