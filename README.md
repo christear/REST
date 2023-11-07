@@ -1,6 +1,6 @@
-# R3ESeq
+# REST
 
-A toolkit for RNA 3'End Sequencing data analysis.
+REST: a RNA 3'End Sequencing data analysis Toolkit. 
 
 #### 0. Prerequisites
 
@@ -21,7 +21,7 @@ A toolkit for RNA 3'End Sequencing data analysis.
 
 #### 1. Introduction
 
-The R3ESeq is a toolkit for RNA 3'End Sequencing data analysis, which could be applied on both bulk RNA-seq data from mutiple 3'End Sequencing methods and common Single cell sequencing (SC-seq) data, including 10X genomics Chromium System.
+The REST is a toolkit for RNA 3'End Sequencing data analysis, which could be applied on both bulk RNA-seq data from mutiple 3'End Sequencing methods and common Single cell sequencing (SC-seq) data, including 10X genomics Chromium System.
 
 The tools has been tested on:
 
@@ -31,30 +31,30 @@ The tools has been tested on:
 
 #### 2. Getting Started
 
-To run R3ESeq, plase run the data.preparation.sh to download prerequisites at first.
+To run REST, plase run the data.preparation.sh to download prerequisites at first.
 
-The R3ESeq includes several key steps. 
+The REST includes several key steps. 
 
 1. call cluster based on RNA 3'End Sequencing data, required input should be in bam or bed format. The method was derived from the previous publications [1-2]. 
-	- R3ESeq callcluster -i [input.file] -f [bam/bed] -o [output.file] 
+	- REST callcluster -i [input.file] -f [bam/bed] -o [output.file] 
 2. filter reliable clusters as putative polyadenylation sites (PASs)
 	
 	a. using the pre-trained deep-learning model 
-	- R3ESeq filtercluster -i [input.file] -o [output.file] --model [pre-trained model]
+	- REST filtercluster -i [input.file] -o [output.file] --model [pre-trained model]
 	
 	b. training the customized model using annotation 
-	- R3ESeq filtercluster -i [input.file] -o [output.file] --outmodel [output.model]
+	- REST filtercluster -i [input.file] -o [output.file] --outmodel [output.model]
 		
 3. count the sequencing reads for each putative PAS 
 	
 	a. bulk RNA-seq data 
-	- R3ESeq countbulk -bam [bam.file] -i [input.cluster] -o [output.count] -s [strandness] --win [width]
+	- REST countbulk -bam [bam.file] -i [input.cluster] -o [output.count] -s [strandness] --win [width]
 	
 	b. SC-seq data 
-	- R3ESeq countsc -bam [bam.file] -i [input.cluster] -o [output.count] -s [strandness] --win [width] -f [output.type/count or usage]
+	- REST countsc -bam [bam.file] -i [input.cluster] -o [output.count] -s [strandness] --win [width] -f [output.type/count or usage]
 4. APA analyis
 
-	- R3ESeq apa -i [input.count.tab] -c [condition.file] -o [output.apa.events] -a [condition.a] -b [condition.b]
+	- REST apa -i [input.count.tab] -c [condition.file] -o [output.apa.events] -a [condition.a] -b [condition.b]
 
 #### 3. Synopsis
 #### 4. Tutorial
