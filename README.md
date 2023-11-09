@@ -5,21 +5,14 @@ REST: a RNA 3'End Sequencing data analysis Toolkit.
 #### 0. Prerequisites
 
 - Python 3.6
-- DNABERT (https://github.com/jerryji1993/DNABERT)
-
-To install DNABERT, please use the requirements.txt rather than the one under DNABERT/examples
-- scikit-learn
-- pandas
-- numpy
-- pysam
-- portion
-- cigar
-- progressbar
 - bedtools
 - Perl 5
 - R 4.1
 - bash
 - featureCounts
+- DNABERT (https://github.com/jerryji1993/DNABERT)
+
+To install DNABERT, please use the requirements.txt rather than the one under DNABERT/examples
 
 #### 1. Introduction
 
