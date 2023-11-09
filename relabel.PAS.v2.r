@@ -6,12 +6,15 @@ library(data.table)
 # 3, read the sequence file baed on predction output
 # 4, relabel the true:1 and false:0 as the last coloum
 ###
-pasmotifs = c('AATAAA', 'ATTAAA', 'TATAAA', 'AGTAAA', 'AAGAAA', 'AATATA', 'AATACA', 'CATAAA', 'GATAAA','AATGAA', 'TTTAAA','ACTAAA','AATAGA')
+#pasmotifs = c('AATAAA', 'ATTAAA', 'TATAAA', 'AGTAAA', 'AAGAAA', 'AATATA', 'AATACA', 'CATAAA', 'GATAAA','AATGAA', 'TTTAAA','ACTAAA','AATAGA')
 dcut = 100
 ###
 
 argv=commandArgs(TRUE)
 tsv = as.character(argv[1])
+pasf = as.character(argv[2])
+pasfda = read.table(pasf)
+pasmotifs = unlist(pasfda[,1])
 
 # read files
 cat("#reading files ...\n")
