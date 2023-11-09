@@ -6,7 +6,6 @@ REST: a RNA 3'End Sequencing data analysis Toolkit.
 
 - Python 3.6
 - bedtools
-- Perl 5
 - R 4.1
 - bash
 - featureCounts
