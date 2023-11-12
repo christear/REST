@@ -33,7 +33,7 @@ The tools has been tested on:
 
 To run REST, plase install DNABERT firstly. Ideally, DNABERT should be located under the same directory as REST 
 
-The REST includes several key steps. 
+The REST includes several key steps (under developing/debuging). 
 
 1. call cluster based on RNA 3'End Sequencing data, required input should be in bam or bed format. The method was derived from the previous publications [1-2]. 
 	- `REST callcluster -i [input.file] -f [bam/bed] -o [output.file]`
