@@ -12,13 +12,13 @@ REST: a RNA 3'End Sequencing data analysis Toolkit.
 - DNABERT (https://github.com/jerryji1993/DNABERT)
 
 To install DNABERT, please use the dnabert.requirements.txt rather than the one under DNABERT/examples
-conda create -n rest python=3.6
-conda activate rest
-conda install pytorch torchvision cudatoolkit=10.0 -c pytorch
-git clone https://github.com/jerryji1993/DNABERT.git
-cd DNABERT
-python3 -m pip install --editable .
-python3 -m pip install -r dnabert.requirements.txt
+`conda create -n rest python=3.6`
+`conda activate rest`
+`conda install pytorch torchvision cudatoolkit=10.0 -c pytorch`
+`git clone https://github.com/jerryji1993/DNABERT.git`
+`cd DNABERT`
+`python3 -m pip install --editable . `
+`python3 -m pip install -r dnabert.requirements.txt`
 #### 1. Introduction
 
 The REST is a toolkit for RNA 3'End Sequencing data analysis, which could be applied on both bulk RNA-seq data from mutiple 3'End Sequencing methods and common Single cell sequencing (SC-seq) data, including 10X genomics Chromium System.
