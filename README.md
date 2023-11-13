@@ -31,7 +31,7 @@ The tools has been tested on:
 
 #### 2. Getting Started
 
-To run REST, plase install DNABERT firstly. Ideally, DNABERT should be located under the same directory as REST 
+To run REST, plase install DNABERT firstly. Ideally, DNABERT should be located under the main directory of REST 
 
 The REST includes several key steps (under developing/debuging). 
 
