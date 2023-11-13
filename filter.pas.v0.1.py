@@ -11,7 +11,7 @@ import os
 import argparse
 #from DNABERT.motif.motif_utils import seq2kmer
 from utils.PAS_utils import seq2kmer,relabelPred,toUpper,cluster2bed,addLabel2bed
-from utils.PAS_utils import relabelPred
+#from utils.PAS_utils import relabelPred
 import pandas as pd
 import numpy as np
 # 
@@ -20,7 +20,8 @@ import sys
 
 if __name__=='__main__':
     
-    parser = argparse.ArgumentParser(description='pasbert')
+    #parser = argparse.ArgumentParser(description='pasbert')
+    parser = argparse.ArgumentParser(description='filtercluster')
     parser.add_argument('--run',help='train/pred')
     #parser.add_argument('--file',help='eg: data/H1.cluster.data.txt')
     parser.add_argument('--input_file',help='cluster file in bed-like format from callcluster')
@@ -35,7 +36,7 @@ if __name__=='__main__':
     # new parameters 
     parser.add_argument('--DNABERT_path',default='DNABERT/examples', help='path to DNABERT script, default=DNABERT/examples')
     parser.add_argument('--out_dir',default='test_out', help='directory for output, default=test_out')
-    parser.add_argument('--strand',default=2, help='strand of the sequencing data, 1: forward strand, 2; reverse strand, 0: stranless')
+    parser.add_argument('--strand',default=2, help='strand of the sequencing data, 1: forward strand, 2; reverse strand, 0: strandless')
     parser.add_argument('--distance',default=50, help='distance threshold to define the overlap with annotation, default = 50')
     parser.add_argument('--annotation',default=None, help='PAS annotation to define true and false for training the model')
     parser.add_argument('--reference',default=None, help='the reference genome used to extract sequence flanking peaks of each cluster')
@@ -62,14 +63,14 @@ if __name__=='__main__':
     reference = args.reference
     
     # checking the input 
-    print(f'[INFO] input file: {input_file}')
+    print(f'[INFO] input file:{input_file}')
     if reference == None:
         print(f'[INFO] the reference genome is required for both training and prediction')
         sys.exit()
-    print(f'[INFO] reference: {reference}')
+    print(f'[INFO] reference:{reference}')
     #
-    flank_len = max_seq_len/2
-    f_filter_chr = True
+    flank_len = int(max_seq_len/2)
+    if_filter_chr = True
     bed_seq = cluster2bed(input_file,flank_len,strand,if_filter_chr)
     bed_seq = bed_seq.sequence(fi=reference,s=True,name = True,tab = True)
     bed_seq_df = pd.read_csv(bed_seq.seqfn,sep = '\t',header = None)
@@ -79,6 +80,7 @@ if __name__=='__main__':
     bed_seq_df['label'] = 0
     bed_seq_df = bed_seq_df.loc[:,['sequence','label','info']]
     if annotation != None:
+        print(f'[INFO] annotation:{annotation}')
         # overlap with annotation to label data
         bed1 = cluster2bed(input_file,distance,strand,if_filter_chr)
         bed1_df = addLabel2bed(bed1,annotation)

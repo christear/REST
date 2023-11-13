@@ -8,7 +8,7 @@
 import re
 import sys
 import pandas as pd
-from seq_utils import kmer2seq
+#from seq_utils import kmer2seq
 import pybedtools
 from pybedtools import BedTool,example_filename
 
