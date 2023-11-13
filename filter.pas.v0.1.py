@@ -71,9 +71,15 @@ if __name__=='__main__':
     #
     flank_len = int(max_seq_len/2)
     if_filter_chr = True
+    #print('[INFO] converting to bed obeject')
     bed_seq = cluster2bed(input_file,flank_len,strand,if_filter_chr)
-    bed_seq = bed_seq.sequence(fi=reference,s=True,name = True,tab = True)
+    print('[INFO] extracting sequence')
+    #bed_seq = bed_seq.sequence(fi=reference,s=True,name = True,tab = True)
+    # it seems getfasta much faster than sequence
+    #bed_seq = bed_seq.getfasta(fi=reference,s=True,name = True,tab = True,fo = 'cluster.seq.txt')
+    bed_seq = bed_seq.getfasta(fi=reference,s=True,name = True,tab = True)
     bed_seq_df = pd.read_csv(bed_seq.seqfn,sep = '\t',header = None)
+    print('[INFO] finished extracting sequence')
     bed_seq_df.columns = ['info','sequence']
     bed_seq_df['sequence'] = bed_seq_df['sequence'].apply(toUpper)
     bed_seq_df['sequence'] = bed_seq_df['sequence'].apply(seq2kmer,k=kmer)

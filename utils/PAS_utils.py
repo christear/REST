@@ -122,7 +122,8 @@ def relabelPred (pred_txt,motif_file,output):
     out_df = pred_df
     out_df['relabel'] = relabel
     if output != None:
-        repred.to_csv(output, index=False, sep = "\t")
+        #repred.to_csv(output, index=False, sep = "\t")
+        out_df.to_csv(output, index = False, sep = '\t')
     #pred_df['relabel'] = relabel
     return out_df
     
