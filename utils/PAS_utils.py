@@ -1,4 +1,4 @@
-# relabelPAS
+# utils for PAS analysis 
 # python=3.6-3.10
 # Bin Zhang
 # Data: Nov 12, 2023
@@ -8,6 +8,9 @@
 import re
 import sys
 import pandas as pd
+from seq_utils import kmer2seq
+import pybedtools
+from pybedtools import BedTool,example_filename
 
 # connect kmer to sequence: wrote by myself 
 def kmer2seq2 (kmer_seq):
@@ -17,7 +20,11 @@ def kmer2seq2 (kmer_seq):
         _cs += kmer_list[i][0]
     _cs += kmer_list[len(kmer_list) - 1]
     return _cs
-
+# 
+def toUpper (seq):
+    us = seq.upper()
+    return us
+    
 # copied from DNABERT/motif/motif_utils.py 
 def seq2kmer(seq, k):
     """
@@ -53,7 +60,6 @@ def kmer2seq(kmers):
     assert len(seq) == len(kmers_list) + len(kmers_list[0]) - 1
     return seq
     
-    
 # determine internal primming (IP)
 # 7 consecutive A or more than 8 A among 10 nucleotide 
 def determineIP (seq):
@@ -84,7 +90,8 @@ def determineMotif (seq,motif_list,k):
             _nm += 1
             #_nm = 1
     return _nm
-    
+   
+### relabel the training data based on PAS motif and internal primming 
 def relabelPred (pred_txt,motif_file,output):
     pred_df = pd.read_csv(pred_txt,sep = '\t')
     cseq_list = pred_df["sequence"].apply(kmer2seq)
@@ -118,3 +125,77 @@ def relabelPred (pred_txt,motif_file,output):
         repred.to_csv(output, index=False, sep = "\t")
     #pred_df['relabel'] = relabel
     return out_df
+    
+### filter chr
+def filter_chr(chr):
+    r = 0
+    if re.match(r"chr[1-9XY]",chr):
+        r = 1
+    return r
+    
+### get strand
+def rev_strand (strand):
+    str_dict = {"+":"-","-":"+"}
+    return str_dict[strand]
+    
+### get peak
+def get_peak (cluster_row):
+    #values = cluster_row.values.tolist()[0]
+    values = cluster_row.tolist()
+    peak = values[7]
+    if values[5] == "-":
+        peak = values[6]
+    return peak
+    
+### cluster to bed object 
+def cluster2bed (cluster,flank_win,strand,if_filter_chr):
+    cluster_df = pd.read_csv(cluster,sep = '\t',header = None)
+    # only keep cluster from chr1-22 and chrX and chrY, remove chrM
+    if if_filter_chr == True:
+        fc = cluster_df[0].apply(filter_chr)
+        cluster_df = cluster_df[fc == 1]
+    # adjust strand based on sequencing data 
+    if strand == 2:
+        cluster_df[5] = cluster_df[5].apply(rev_strand)
+    # get peak from each cluster
+    peaks = cluster_df.apply(get_peak,axis = 1)
+    bed_df =  cluster_df.loc[:,[0,1,2,3,4,5]]
+    if flank_win > 1:
+        bed_df[1] = peaks - flank_win
+        bed_df[2] = peaks + flank_win
+    elif flank_win == 1:
+        bed_df[1] = peaks - flank_win
+        bed_df[2] = peaks
+    else:
+        print(f'### Error: flank_win {flank_win} is not correct')
+    # create bed from data.frame
+    bed = BedTool.from_dataframe(bed_df)
+    return bed
+    
+### add labels to bed object based on annotation (bedformat)
+# entries has intersection with annotation or not will label with: true/1 and false/0
+def label (x):
+    if x:
+        l = 1
+    else:
+        l = 0
+    return l
+
+def addLabel2bed(bed,annotation):
+    bed_df = bed.to_dataframe()
+    anno_bed = bed.intersect(annotation,s = True)
+    anno_bed_df = anno_bed.to_dataframe()
+    ids = bed_df['name']
+    bed_df['anno'] = ids.isin(anno_bed_df['name'])
+    bed_df['label'] = bed_df['anno'].apply(label)
+    return bed_df
+    
+
+    
+
+    
+    
+    
+    
+    
+    
