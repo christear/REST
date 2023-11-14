@@ -120,6 +120,9 @@ if __name__=='__main__':
             output_path=f'{out_dir}/active_r{r}_m{kmer}-0'
             os.system('mkdir -p {}'.format(output_path))
             print('[INFO] save files in this round under: {}'.format(output_path))
+            if os.path.isfile(f'{output_path}/pytorch_model.bin'):
+                print(f'[INFO] a pre-trained model of round {r} exists')
+                continue
             if r==0:
                 bed_seq_df.to_csv(f'{output_path}/train.tsv',index=False,sep='\t')
                 #os.system('cp {} {}/data.txt'.format(file, output_path))
@@ -194,7 +197,8 @@ if __name__=='__main__':
             print('[INFO] finished relabel')
 
             print('[INFO] start process relabeled results to new train data for next round')
-            output_path='{}.tmp/active_r{}_m{}-0'.format(file,r+1,kmer)
+            #output_path='{}.tmp/active_r{}_m{}-0'.format(file,r+1,kmer)
+            output_path='{}/active_r{}_m{}-0'.format(out_dir,r+1,kmer)
             os.system('mkdir -p {}'.format(output_path))
             #relabel_data=pd.read_csv('{}/pred.relabeled.tsv'.format(pred_path),sep='\t')
             relabel_data=relabel_data.loc[:,['sequence','relabel','info']]
