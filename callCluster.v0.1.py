@@ -1,7 +1,8 @@
 # callCluster
-# python=3.9
+# python=3.6-3.10
 # Bin Zhang
 # Data: Sep 14, 2021
+# Last modification: Nov, 14, 2023
 # version: 1.0
 # ENV: 
 # @ pip install cigar
@@ -13,15 +14,15 @@ import os
 import re
 import sys
 import cigar
-import pandas as pd
-import portion as P
-import datetime
-from multiprocessing import Pool
-import numpy as np
-from collections import Counter
-from collections import defaultdict
 import pysam
-from progressbar import ProgressBar, Bar, ETA
+import datetime
+import numpy as np
+import pandas as pd
+from multiprocessing import Pool
+#import portion as P
+#from collections import Counter
+#from collections import defaultdict
+#from progressbar import ProgressBar, Bar, ETA
 
 cluster_width = 24
 # input file format should be bam to bed format
