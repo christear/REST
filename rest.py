@@ -8,12 +8,15 @@
 import os
 import sys
 import argparse
+from utils.Cluster import callCluster
+
 
 def call_cluster_main(args):
-    print(f'call cluster')
+    print(f'[INFO] call cluster based on {args.input_file}')
+    callCluster(args.input_file,args.input_format,args.strand,args.output,args.output_dis)
     
 def filter_cluster_main(args):
-    print(f'filter cluster')
+    print(f'[INFO] filter cluster in {args.input_file}')
 
 
 ### main function 
@@ -22,7 +25,7 @@ if __name__ == '__main__':
     subparsers = parser.add_subparsers(help = 'sub-command help')
     
     # subfunction: call_cluster
-    call_cluster = subparsers.add_parser('call_cluster', help='call cluster from alignment bam/bed file')
+    call_cluster = subparsers.add_parser('call_cluster', help='call cluster based on alignment bam/bed file')
     call_cluster.add_argument('--input_file', required=True, help = 'input file in bam or bed format')
     call_cluster.add_argument('--input_format', default = 'bed', help = 'format of the input file')
     call_cluster.add_argument('--strand', type = int, default = 2, help = 'strand of the sequencing data that generate the input file. 1: forward strand, 2: reverse strand, 0: strandless')
@@ -50,14 +53,8 @@ if __name__ == '__main__':
     filter_cluster.add_argument('--reference',default=None, help='the reference genome used to extract sequence flanking peaks of each cluster')
     filter_cluster.set_defaults(func=filter_cluster_main)
     #
-    args = parser.parse_args()
-    if 'call_cluster' in args:
-        print(call_cluster)
-    elif 'filter_cluster' in args:
-        print(filter_cluster)
-    elif 'count' in args:
-        print('counting')
-    else:
+    if len(sys.argv) < 2:
         sys.exit()
-    print(args)
+    args = parser.parse_args()
+    #print(args)
     args.func(args)

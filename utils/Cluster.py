@@ -126,7 +126,7 @@ def findPeak (cov_dict):
 
 #"""
 # call cluster from the dict 
-def callCluser (input_file,input_format,if_stranded,out_cluster,out_dis):
+def callCluster (input_file,input_format,if_stranded,out_cluster,out_dis):
     start_time = datetime.datetime.now()
     locus_covs = input2dict(input_file,input_format,if_stranded)
     _tc = 0
@@ -237,7 +237,7 @@ def callCluser (input_file,input_format,if_stranded,out_cluster,out_dis):
         print('[INFO] {} reads are from multiple locus'.format(_tc2))
         end_time = datetime.datetime.now()
         print('[INFO] finished and the running time is {}'.format(end_time - start_time))
-#"""
+"""
 if len(sys.argv) < 4:
     print("Usage:python callCluster.py input_file input_format if_stranded out_cluster out_dis")
     sys.exit(1)
@@ -245,4 +245,4 @@ else:
     if_stranded = int(sys.argv[3])
     #input2dict(sys.argv[1],sys.argv[2],if_stranded)
     callCluser(sys.argv[1],sys.argv[2],if_stranded,sys.argv[4],sys.argv[5])
-#"""    
+"""
