@@ -6,9 +6,7 @@
 # version: 1.0
 # ENV: 
 # @ pip install cigar
-# @ pip install portion
-# @ pip install pysam
-# @ pip install progressbar
+
 
 import os
 import re
@@ -18,11 +16,7 @@ import pysam
 import datetime
 import numpy as np
 import pandas as pd
-from multiprocessing import Pool
-#import portion as P
-#from collections import Counter
-#from collections import defaultdict
-#from progressbar import ProgressBar, Bar, ETA
+#from multiprocessing import Pool
 
 cluster_width = 24
 # input file format should be bam to bed format
