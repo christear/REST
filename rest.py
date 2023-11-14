@@ -18,7 +18,7 @@ def filter_cluster_main(args):
 
 ### main function 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description = "REST", add_help = 'REST:RNA 3\'End Sequencing data analysis Toolkit\nAvailbale tools: call_cluster, filter_cluster')
+    parser = argparse.ArgumentParser(description = "REST:RNA 3\'End Sequencing data analysis Toolkit", add_help = 'REST Availbale tools: call_cluster, filter_cluster')
     subparsers = parser.add_subparsers(help = 'sub-command help')
     
     # subfunction: call_cluster
@@ -31,8 +31,8 @@ if __name__ == '__main__':
     call_cluster.set_defaults(func = call_cluster_main)
     
     # subfunction: filter_cluster
-    filter_cluster = subparsers.add_parser('filter_cluster', help = 'filter the cluster from the call_cluster step based on fine-tuned DNABERT model')
-    filter_cluster.add_argument('--run', default = 'pred', help = 'train/pred: only predict the cluster or also train a fine-tuned DNABERT model')
+    filter_cluster = subparsers.add_parser('filter_cluster', help = 'filter cluster file based on fine-tuned DNABERT models')
+    filter_cluster.add_argument('--run', default = 'pred', help = 'pred/train: only predict true/false for fintering, or also train a fine-tuned model')
     filter_cluster.add_argument('--input_file', required = True, help = 'input file of cluster in bed-like format')
     filter_cluster.add_argument('--rounds', type = int, default = 5, help = 'rounds of the training, eg: 5')
     filter_cluster.add_argument('--model', default='model/5-new-12w-0', help='eg: /active_r0_m5-0, default=model/5-new-12w-0')
