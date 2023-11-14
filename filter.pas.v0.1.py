@@ -6,6 +6,8 @@
 # @train python pasbert.py --run train --file data/H1.cluster.data.txt --rounds 5 --kmer 5 --batch_size 100 --train_epoch 5
 # @pred python pasbert.py --run pred --file data/H1.cluster.data.txt --model data/H1.cluster.data.txt.tmp/active_r0_m5-0 --kmer 5 --batch_size 100
 # Usgae: new, from cluster 
+# @train python filter.pas.v0.1.py --run train --input_file H1.random10k.cluster --rounds 5 --kmer 5 --batch_size 500 --train_epoch 5 --motif_file human.PAS.motif --out_dir test_10k_cluster
+
 
 import os
 import argparse
@@ -16,7 +18,6 @@ import pandas as pd
 import numpy as np
 # 
 import sys
-
 
 if __name__=='__main__':
     
