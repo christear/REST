@@ -149,7 +149,7 @@ def filter_cluster_main(args):
         pas_bed_df.to_csv(f'{out_dir}/train.summary',sep = '\t',index = False)
     elif run=='pred':
         print('[INFO] start pred pipeline')
-        print(f'[INFO] save files to prediction folder {our_dir}')
+        print(f'[INFO] save files to prediction folder {out_dir}')
         pred_path=out_dir
         os.system('mkdir -p {}'.format(pred_path))
         bed_seq_df.to_csv(f'{pred_path}/dev.tsv',index=False,sep='\t')
