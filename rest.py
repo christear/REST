@@ -73,7 +73,7 @@ def filter_cluster_main(args):
             elif r!=0:
                 print('[INFO] train.tsv should exist, from the relabel of last round')
             print('[INFO] start finetune model')
-            if str(kmer) no in init_model:
+            if str(kmer) not in init_model:
                 print(f'[INFO] error: kmer{kmer} does not match with the model{init_model}')
             os.system(f'python {DNABERT_path}/run_finetune.py \
                 --model_type dna \
