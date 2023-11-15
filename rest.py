@@ -8,8 +8,12 @@
 import os
 import sys
 import argparse
+import numpy as np 
+import pandas as pd
 from utils.Cluster import callCluster
+from utils.PAS_utils import relabelPred
 from utils.Data_process import data_preprocessing
+
 
 def call_cluster_main(args):
     print(f'[INFO] call cluster based on {args.input_file}')
@@ -45,7 +49,7 @@ def filter_cluster_main(args):
     print(f'[INFO] reference:{reference}')
     #
     flank_len = int(max_seq_len/2)
-    bed_seq_df,pas_bed_df = data_preprocessing(input_file,flank_len,strand,reference,kmer,distance,annotation,)
+    bed_seq_df,pas_bed_df = data_preprocessing(input_file,flank_len,strand,reference,kmer,distance,annotation)
     print('[INFO] finished data processing')
     #
     if run=='train':
