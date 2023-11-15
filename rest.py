@@ -122,7 +122,7 @@ if __name__ == '__main__':
     filter_cluster.add_argument('--motif_file',default='mouse.PAS.motif',help='path to motif file, default=mouse.PAS.motif')
     filter_cluster.add_argument('--DNABERT_path',default='DNABERT/examples', help='path to DNABERT script, default=DNABERT/examples')
     filter_cluster.add_argument('--out_dir',default='test_out', help='directory for output, default=test_out')
-    filter_cluster.add_argument('--strand',default=2, help='strand of the cluster, 1: forward strand, 2; reverse strand, 0: strandless')
+    filter_cluster.add_argument('--strand',default=1, help='strand of the cluster, 1: forward strand, 2; reverse strand, 0: strandless')
     filter_cluster.add_argument('--distance',default=50, help='distance threshold to define the overlap with annotation, default = 50')
     filter_cluster.add_argument('--annotation',default=None, help='PAS annotation to define true and false for training the model')
     filter_cluster.add_argument('--reference',default=None, help='the reference genome used to extract sequence flanking peaks of each cluster')
