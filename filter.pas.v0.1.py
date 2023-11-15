@@ -48,8 +48,8 @@ if __name__=='__main__':
     run=args.run
     if run=='pred':
         model=args.model
-    else:
-        init_model = args.model
+    #else:
+    #    init_model = args.model
     #file=args.file
     input_file=args.input_file
     rounds=args.rounds
@@ -142,14 +142,14 @@ if __name__=='__main__':
                 print('[INFO] train.tsv should exist, from the relabel of last round')
             print('[INFO] start finetune model')
             #init_model = model
-            #if kmer==3:
-            #    init_model='model/3-new-12w-0'
-            #elif kmer==4:
-            #    init_model='model/4-new-12w-0'
-            #elif kmer==5:
-            #    init_model='model/5-new-12w-0'
-            #elif kmer==6:
-            #    init_model='model/6-new-12w-0'
+            if kmer==3:
+                init_model='model/3-new-12w-0'
+            elif kmer==4:
+                init_model='model/4-new-12w-0'
+            elif kmer==5:
+                init_model='model/5-new-12w-0'
+            elif kmer==6:
+                init_model='model/6-new-12w-0'
             os.system('python {}/run_finetune.py \
                 --model_type dna \
                 --tokenizer_name=dna{} \

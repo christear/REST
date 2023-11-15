@@ -72,7 +72,7 @@ def filter_cluster_main(args):
                 print('[INFO] train.tsv should exist, from the relabel of last round')
             print('[INFO] start finetune model')
             ### checking if this requires for 
-            
+            init_model = 
             if kmer==3:
                 init_model='model/3-new-12w-0'
             elif kmer==4:
