@@ -7,7 +7,7 @@
 # @pred python pasbert.py --run pred --file data/H1.cluster.data.txt --model data/H1.cluster.data.txt.tmp/active_r0_m5-0 --kmer 5 --batch_size 100
 # Usgae: new, from cluster 
 # @train python filter.pas.v0.1.py --run train --input_file H1.random10k.cluster --rounds 5 --kmer 5 --batch_size 500 --train_epoch 5 --motif_file human.PAS.motif --out_dir test_10k_cluster
-# 
+# @pred python filter.pas.v0.1.py --run pred --input_file H1.random1k.cluster --model model/human_model --kmer 5 --batch_size 500 --train_epoch 5 --out_dir test_1k_cluster --annotation hg38.annotated.chr.merged.pas --reference $genome
 
 
 import os
@@ -17,6 +17,7 @@ from utils.PAS_utils import seq2kmer,relabelPred,toUpper,cluster2bed,addLabel2be
 #from utils.PAS_utils import relabelPred
 import pandas as pd
 import numpy as np
+import random
 # 
 import sys
 
@@ -38,7 +39,7 @@ if __name__=='__main__':
     # new parameters 
     parser.add_argument('--DNABERT_path',default='DNABERT/examples', help='path to DNABERT script, default=DNABERT/examples')
     parser.add_argument('--out_dir',default='test_out', help='directory for output, default=test_out')
-    parser.add_argument('--strand',default=2, help='strand of the sequencing data, 1: forward strand, 2; reverse strand, 0: strandless')
+    parser.add_argument('--strand',default=2, help='strand of cluster, 1: forward strand, 2; reverse strand, 0: strandless')
     parser.add_argument('--distance',default=50, help='distance threshold to define the overlap with annotation, default = 50')
     parser.add_argument('--annotation',default=None, help='PAS annotation to define true and false for training the model')
     parser.add_argument('--reference',default=None, help='the reference genome used to extract sequence flanking peaks of each cluster')
@@ -85,7 +86,8 @@ if __name__=='__main__':
     bed_seq_df.columns = ['info','sequence']
     bed_seq_df['sequence'] = bed_seq_df['sequence'].apply(toUpper)
     bed_seq_df['sequence'] = bed_seq_df['sequence'].apply(seq2kmer,k=kmer)
-    bed_seq_df['label'] = 0
+    #bed_seq_df['label'] = 0
+    bed_seq_df['label'] = [random.randint(0, 1) for _ in range(len(bed_seq_df))]
     bed_seq_df = bed_seq_df.loc[:,['sequence','label','info']]
     if annotation != None:
         print(f'[INFO] annotation:{annotation}')
