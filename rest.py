@@ -9,7 +9,7 @@ import os
 import sys
 import argparse
 from utils.Cluster import callCluster
-
+from utils.Data_process import data_preprocessing
 
 def call_cluster_main(args):
     print(f'[INFO] call cluster based on {args.input_file}')
@@ -17,6 +17,81 @@ def call_cluster_main(args):
     
 def filter_cluster_main(args):
     print(f'[INFO] filter cluster in {args.input_file}')
+    run=args.run
+    if run=='pred':
+        model=args.model
+    #file=args.file
+    input_file=args.input_file
+    rounds=args.rounds
+    kmer=args.kmer
+    batch_size=args.batch_size
+    train_epoch=args.train_epoch
+    max_seq_len=args.max_seq_len
+    n_process=args.n_process
+    motif_file=args.motif_file
+    #
+    DNABERT_path = args.DNABERT_path
+    out_dir = args.out_dir
+    strand = args.strand
+    distance = args.distance
+    annotation = args.annotation
+    reference = args.reference
+    # checking 
+    if reference == None:
+        print(f'[INFO] the reference genome is required for both training and prediction')
+        sys.exit()
+    print(f'[INFO] reference:{reference}')
+    #
+    flank_len = int(max_seq_len/2)
+    bed_seq_df,pas_bed_df = data_preprocessing(input_file,flank_len,strand,reference,kmer,distance,annotation,)
+    print('[INFO] finished data processing')
+    #
+    if run=='train':
+        if annotation == None:
+            print(f'[INFO] annotation is required for training')
+            sys.exit()
+        print('[INFO] start training pipeline')
+        print(f'[INFO] N rounds: {rounds}')
+        print(f'[INFO] kmer: {kmer}')
+        #
+        os.system(f'mkdir -p {out_dir}')
+        print(f'[INFO] creat output folder: {out_dir}')
+        for r in range(rounds):
+            print(f'[INFO] **start training round {r}**')
+            output_path=f'{out_dir}/active_r{r}_m{kmer}-0'
+            # it the fine-tuned model exists, skipped the training 
+            if os.path.isfile(f'{output_path}/pytorch_model.bin'):
+                print(f'[INFO] a pre-trained model of round {r} exists')
+                continue
+            os.system('mkdir -p {}'.format(output_path))
+            print(f'[INFO] save files in this round under: {output_path}')
+            if r==0:
+                bed_seq_df.to_csv(f'{output_path}/train.tsv',index=False,sep='\t')
+                print(f'[INFO] saved {output_path}/train.tsv')      
+            elif r!=0:
+                print('[INFO] train.tsv should exist, from the relabel of last round')
+            print('[INFO] start finetune model')
+            ### checking if this requires for 
+            
+            if kmer==3:
+                init_model='model/3-new-12w-0'
+            elif kmer==4:
+                init_model='model/4-new-12w-0'
+            elif kmer==5:
+                init_model='model/5-new-12w-0'
+            elif kmer==6:
+                init_model='model/6-new-12w-0'
+                
+        
+    elif run=='pred':
+        print('[INFO] start pred pipeline')
+        print(f'[INFO] save files to prediction folder {our_dir}')
+        pred_path=out_dir
+        os.system('mkdir -p {}'.format(pred_path))
+        bed_seq_df.to_csv(f'{pred_path}/dev.tsv',index=False,sep='\t')
+        print('[INFO] start prediction')
+        
+    
 
 
 ### main function 

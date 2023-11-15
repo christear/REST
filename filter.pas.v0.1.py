@@ -7,6 +7,7 @@
 # @pred python pasbert.py --run pred --file data/H1.cluster.data.txt --model data/H1.cluster.data.txt.tmp/active_r0_m5-0 --kmer 5 --batch_size 100
 # Usgae: new, from cluster 
 # @train python filter.pas.v0.1.py --run train --input_file H1.random10k.cluster --rounds 5 --kmer 5 --batch_size 500 --train_epoch 5 --motif_file human.PAS.motif --out_dir test_10k_cluster
+# 
 
 
 import os
@@ -227,7 +228,7 @@ if __name__=='__main__':
         
     elif run=='pred':
         print('[INFO] start pred pipeline')
-        print(f'[INFO] save files to prediction folder {our_dir}')
+        print(f'[INFO] save files to prediction folder {out_dir}')
         pred_path=out_dir
         os.system('mkdir -p {}'.format(pred_path))
         bed_seq_df.to_csv(f'{pred_path}/dev.tsv',index=False,sep='\t')
