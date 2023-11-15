@@ -266,7 +266,7 @@ if __name__=='__main__':
         threshold=0.5
         _pred01=np.int8(_pred>=threshold)
         pas_bed_df['pred_value'] = _pred
-        pas_bed_df['pred_01'] = pred01
+        pas_bed_df['pred_01'] = _pred01
         #data['pred_value']=_pred
         #data['pred_01']=_pred01
         #data=data.loc[:,['info','pred_value','pred_01']]
