@@ -20,6 +20,8 @@ def filter_cluster_main(args):
     run=args.run
     if run=='pred':
         model=args.model
+    else:
+        init_model = args.model
     #file=args.file
     input_file=args.input_file
     rounds=args.rounds
@@ -71,18 +73,76 @@ def filter_cluster_main(args):
             elif r!=0:
                 print('[INFO] train.tsv should exist, from the relabel of last round')
             print('[INFO] start finetune model')
-            ### checking if this requires for 
-            init_model = 
-            if kmer==3:
-                init_model='model/3-new-12w-0'
-            elif kmer==4:
-                init_model='model/4-new-12w-0'
-            elif kmer==5:
-                init_model='model/5-new-12w-0'
-            elif kmer==6:
-                init_model='model/6-new-12w-0'
-                
-        
+            if str(kmer) no in init_model:
+                print(f'[INFO] error: kmer{kmer} does not match with the model{init_model}')
+            os.system(f'python {DNABERT_path}/run_finetune.py \
+                --model_type dna \
+                --tokenizer_name=dna{kmer} \
+                --model_name_or_path {init_model} \
+                --task_name dnaprom \
+                --do_train \
+                --data_dir {output_path} \
+                --max_seq_length {max_seq_len} \
+                --per_gpu_eval_batch_size={batch_size}   \
+                --per_gpu_train_batch_size={batch_size}   \
+                --learning_rate 2e-4 \
+                --num_train_epochs {train_epoch} \
+                --output_dir {output_path} \
+                --save_steps 4000 \
+                --warmup_percent 0.1 \
+                --hidden_dropout_prob 0.1 \
+                --overwrite_output \
+                --weight_decay 0.01 \
+                --n_process {n_process}')
+            print(f'[INFO] finish finetune model under: {output_path}')
+            print('[INFO] start prediction with finetuned model')
+            pred_path=f'{output_path}/pred'
+            os.system(f'mkdir -p {pred_path}')
+            os.system(f'cp {output_path}/train.tsv {pred_path}/dev.tsv')
+            os.system(f'python {DNABERT_path}/run_finetune.py \
+                --model_type dna \
+                --tokenizer_name=dna{kmer} \
+                --model_name_or_path {output_path} \
+                --task_name dnaprom \
+                --do_predict \
+                --data_dir {pred_path}  \
+                --max_seq_length {max_seq_len} \
+                --per_gpu_pred_batch_size={batch_size}   \
+                --output_dir {output_path} \
+                --predict_dir {pred_path} \
+                --n_process {n_process}')
+            print(f'[INFO] finished prediction under: {pred_path}')
+            print('[INFO] start process prediction result')
+            data=pd.read_csv(f'{pred_path}/dev.tsv',sep='\t')
+            _pred=np.load(f'{pred_path}/pred_results.npy')
+            threshold=0.5
+            _pred01=np.int8(_pred>=threshold)
+            data['pred_value']=_pred
+            data['pred_01']=_pred01
+            data.to_csv(f'{pred_path}/pred.tsv',index=False,sep='\t')
+            print('[INFO] finished process prediction result')
+
+            print('[INFO] start relabel')
+            relabel_data = relabelPred(f'{pred_path}/pred.tsv',motif_file,f'{pred_path}/pred.relabeled.tsv')
+            print('[INFO] finished relabel')
+            print('[INFO] start process relabeled results to new train data for next round')
+            output_path='{}/active_r{}_m{}-0'.format(out_dir,r+1,kmer)
+            os.system(f'mkdir -p {output_path}')
+            relabel_data=relabel_data.loc[:,['sequence','relabel','info']]
+            relabel_data.columns=['sequence', 'label', 'info']
+            relabel_data.to_csv(f'{output_path}/train.tsv',sep='\t',index=False)
+            print('[INFO] finish process')
+            print('[INFO] **finished training round {}**'.format(r))
+        # summarize multiple rounds predictions 
+        print('[INFO] summarize predictions')
+        for r in range(rounds):
+            round_df = pd.read_csv(f'{out_dir}/active_r{r}_m{kmer}/pred/pred.relabeled.tsv',sep = '\t')
+            pas_bed_df[f'inputlabel_r{r}'] = round_df['label']
+            pas_bed_df[f'predvalue_r{r}'] = round_df['pred_value']
+            pas_bed_df[f'pred01_r{r}'] = round_df['pred_01']
+            pas_bed_df[f'outputlabel_r{r}'] = round_df['relabel']
+        #
+        pas_bed_df.to_csv(f'{out_dir}/train.summary',sep = '\t',index = False)
     elif run=='pred':
         print('[INFO] start pred pipeline')
         print(f'[INFO] save files to prediction folder {our_dir}')
@@ -90,9 +150,29 @@ def filter_cluster_main(args):
         os.system('mkdir -p {}'.format(pred_path))
         bed_seq_df.to_csv(f'{pred_path}/dev.tsv',index=False,sep='\t')
         print('[INFO] start prediction')
-        
-    
-
+        os.system(f'python {DNABERT_path}/run_finetune.py \
+                --model_type dna \
+                --tokenizer_name=dna{kmer} \
+                --model_name_or_path {model} \
+                --task_name dnaprom \
+                --do_predict \
+                --data_dir {pred_path}  \
+                --max_seq_length {max_seq_len} \
+                --per_gpu_pred_batch_size={batch_size}   \
+                --output_dir {model} \
+                --predict_dir {pred_path} \
+                --n_process {n_process}')
+        print(f'[INFO] finished prediction under: {pred_path}')
+        print('[INFO] start process prediction result')
+        _pred=np.load(f'{pred_path}/pred_results.npy')
+        threshold=0.5
+        _pred01=np.int8(_pred>=threshold)
+        pas_bed_df['pred_value'] = _pred
+        pas_bed_df['pred_01'] = _pred01
+        pas_bed_df.to_csv(f'{pred_path}/prediction.tsv',index = False, sep = '\t')
+        print(f'[INFO] prediction saved to {out_dir}/prediction.tsv')
+        print('[INFO] finished process prediction result')
+        #
 
 ### main function 
 if __name__ == '__main__':
