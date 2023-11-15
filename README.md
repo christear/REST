@@ -36,14 +36,14 @@ To run REST, plase install DNABERT firstly. Ideally, DNABERT should be located u
 The REST includes several key steps (under developing/debuging). 
 
 1. call cluster based on RNA 3'End Sequencing data, required input should be in bam or bed format. The method was derived from the previous publications [1-2]. 
-	- `REST callcluster -i [input.file] -f [bam/bed] -o [output.file]`
+	- `python rest.py callcluster --input_file [input.file] --input_format [bam/bed] --strand 2 --output [output.cluster] --output_dis [cluster.distance]`
 2. filter reliable clusters as putative polyadenylation sites (PASs)
 	
-	a. using the pre-trained deep-learning model 
-	- `REST filtercluster -i [input.file] -o [output.file] --model [pre-trained model]`
+	a. retrain/fune-tuen a pre-trained DNABERT model to the PASBERT model 
+	- `python rest.py filtercluster --run train --DNABERT_path [DNABERT.path] --input_file [input.cluster] --out_dir [output.dir] --reference [reference.genome] --annotation [pas.annotation] --model [pre-trained.DNABERT.model] --round 5 --kmer 5 --motif_file human.pas.motif`
 	
-	b. training the customized model using annotation 
-	- `REST filtercluster -i [input.file] -o [output.file] --outmodel [output.model]`
+	b. predict based on the pre-tained PASBERT model  
+	- `python rest.py filtercluster --run pred --DNABERT_path [DNABERT.path] --input_file [input.cluster] --out_dir [output.dir]  --model [model] --reference [reference.genome]`
 		
 3. count the sequencing reads for each putative PAS 
 	
