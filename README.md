@@ -17,7 +17,7 @@ To run REST, plese install DNABERT firstly with the below codes, indeally under 
 `conda activate rest` \
 `conda install pytorch torchvision cudatoolkit=10.0 -c pytorch` \
 to run with GPU, please use this for pytorch \
-`conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia` \
+`conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia` 
 
 Download DNABERT with GitHub or manually \
 `git clone https://github.com/jerryji1993/DNABERT.git` \
