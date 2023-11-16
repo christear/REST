@@ -9,23 +9,23 @@ REST: a RNA 3'End Sequencing data analysis Toolkit.
 - DNABERT (https://github.com/jerryji1993/DNABERT)
 - featureCounts (only required for count)
 
-Download the REST with GitHub or manually
+Download the REST with GitHub or manually \
 `git clone https://github.com/christear/REST.git`
 
-To run REST, plese install DNABERT firstly with the below codes, indeally under the directory of REST
+To run REST, plese install DNABERT firstly with the below codes, indeally under the directory of REST \
 `conda create -n rest python=3.6` \
 `conda activate rest` \
 `conda install pytorch torchvision cudatoolkit=10.0 -c pytorch` \
 to run with GPU, please use this for pytorch
 `conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia`
-Download DNABERT with GitHub or manually
+Download DNABERT with GitHub or manually \ 
 `git clone https://github.com/jerryji1993/DNABERT.git` \
 `cd DNABERT` \
 `python3 -m pip install --editable . ` \
-please use the dnabert.requirements.txt rather than the one under DNABERT/examples
+please use the dnabert.requirements.txt rather than the one under DNABERT/examples \
 `python3 -m pip install -r ../dnabert.requirements.txt`
 
-After sucessfuly install of DNABERT, install other required packages for REST
+After sucessfuly install of DNABERT, install other required packages for REST \
 `python3 -m pip install -r requirements.txt`
 
 To retrain the model (PASBERT) for polyadenylation site (PAS) analysis , please download the initial pretrained DNABERT model as mentioned in (https://github.com/jerryji1993/DNABERT)
