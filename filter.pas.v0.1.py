@@ -39,7 +39,7 @@ if __name__=='__main__':
     # new parameters 
     parser.add_argument('--DNABERT_path',default='DNABERT/examples', help='path to DNABERT script, default=DNABERT/examples')
     parser.add_argument('--out_dir',default='test_out', help='directory for output, default=test_out')
-    parser.add_argument('--strand',default=1, help='strand of cluster, 1: forward strand, 2; reverse strand, 0: strandless')
+    parser.add_argument('--strand',type = int,default=1, help='strand of cluster, 1: forward strand, 2; reverse strand, 0: strandless')
     parser.add_argument('--distance',default=50, help='distance threshold to define the overlap with annotation, default = 50')
     parser.add_argument('--annotation',default=None, help='PAS annotation to define true and false for training the model')
     parser.add_argument('--reference',default=None, help='the reference genome used to extract sequence flanking peaks of each cluster')

@@ -14,7 +14,6 @@ from utils.Cluster import callCluster
 from utils.PAS_utils import relabelPred
 from utils.Data_process import data_preprocessing
 
-
 def call_cluster_main(args):
     print(f'[INFO] call cluster based on {args.input_file}')
     callCluster(args.input_file,args.input_format,args.strand,args.output,args.output_dis)
@@ -50,6 +49,7 @@ def filter_cluster_main(args):
     #
     flank_len = int(max_seq_len/2)
     bed_seq_df,pas_bed_df = data_preprocessing(input_file,flank_len,strand,reference,kmer,distance,annotation)
+    print([input_file,flank_len,strand,reference,kmer,distance,annotation])
     print('[INFO] finished data processing')
     #
     if run=='train':
@@ -140,7 +140,7 @@ def filter_cluster_main(args):
         # summarize multiple rounds predictions 
         print('[INFO] summarize predictions')
         for r in range(rounds):
-            round_df = pd.read_csv(f'{out_dir}/active_r{r}_m{kmer}/pred/pred.relabeled.tsv',sep = '\t')
+            round_df = pd.read_csv(f'{out_dir}/active_r{r}_m{kmer}-0/pred/pred.relabeled.tsv',sep = '\t')
             pas_bed_df[f'inputlabel_r{r}'] = round_df['label']
             pas_bed_df[f'predvalue_r{r}'] = round_df['pred_value']
             pas_bed_df[f'pred01_r{r}'] = round_df['pred_01']
@@ -153,6 +153,8 @@ def filter_cluster_main(args):
         pred_path=out_dir
         os.system('mkdir -p {}'.format(pred_path))
         bed_seq_df.to_csv(f'{pred_path}/dev.tsv',index=False,sep='\t')
+        #ap = bed_seq_df['label'].sum()
+        #print(f'{ap} pas overlapped with annotation')
         print('[INFO] start prediction')
         os.system(f'python {DNABERT_path}/run_finetune.py \
                 --model_type dna \
@@ -187,7 +189,7 @@ if __name__ == '__main__':
     call_cluster = subparsers.add_parser('call_cluster', help='call cluster based on alignment bam/bed file')
     call_cluster.add_argument('--input_file', required=True, help = 'input file in bam or bed format')
     call_cluster.add_argument('--input_format', default = 'bed', help = 'format of the input file')
-    call_cluster.add_argument('--strand', type = int, default = 2, help = 'strand of the sequencing data that generate the input file. 1: forward strand, 2: reverse strand, 0: strandless')
+    call_cluster.add_argument('--strand', type = int, default = 1, help = 'strand of the sequencing data that generate the input file. 1: forward strand, 2: reverse strand, 0: strandless')
     call_cluster.add_argument('--output', default = 'tmp.cluster', help = 'output file of the identified cluster')
     call_cluster.add_argument('--output_dis', default = 'tmp.dis', help = 'distance of the output cluster')
     call_cluster.set_defaults(func = call_cluster_main)
@@ -206,7 +208,7 @@ if __name__ == '__main__':
     filter_cluster.add_argument('--motif_file',default='mouse.PAS.motif',help='path to motif file, default=mouse.PAS.motif')
     filter_cluster.add_argument('--DNABERT_path',default='DNABERT/examples', help='path to DNABERT script, default=DNABERT/examples')
     filter_cluster.add_argument('--out_dir',default='test_out', help='directory for output, default=test_out')
-    filter_cluster.add_argument('--strand',default=1, help='strand of the cluster, 1: forward strand, 2; reverse strand, 0: strandless')
+    filter_cluster.add_argument('--strand',type = int,default=1, help='strand of the cluster, 1: forward strand, 2; reverse strand, 0: strandless')
     filter_cluster.add_argument('--distance',default=50, help='distance threshold to define the overlap with annotation, default = 50')
     filter_cluster.add_argument('--annotation',default=None, help='PAS annotation to define true and false for training the model')
     filter_cluster.add_argument('--reference',default=None, help='the reference genome used to extract sequence flanking peaks of each cluster')
