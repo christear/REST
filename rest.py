@@ -189,7 +189,7 @@ if __name__ == '__main__':
     call_cluster = subparsers.add_parser('call_cluster', help='call cluster based on alignment bam/bed file')
     call_cluster.add_argument('--input_file', required=True, help = 'input file in bam or bed format')
     call_cluster.add_argument('--input_format', default = 'bed', help = 'format of the input file')
-    call_cluster.add_argument('--strand', type = int, default = 1, help = 'strand of the sequencing data that generate the input file. 1: forward strand, 2: reverse strand, 0: strandless')
+    call_cluster.add_argument('--strand', type = int, default = 2, help = 'strand of the sequencing data that generate the input file. 1: forward strand, 2: reverse strand, 0: strandless')
     call_cluster.add_argument('--output', default = 'tmp.cluster', help = 'output file of the identified cluster')
     call_cluster.add_argument('--output_dis', default = 'tmp.dis', help = 'distance of the output cluster')
     call_cluster.set_defaults(func = call_cluster_main)
