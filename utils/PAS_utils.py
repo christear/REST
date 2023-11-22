@@ -154,13 +154,13 @@ def cluster2bed (cluster,flank_win,strand,if_filter_chr):
     # only keep cluster from chr1-22 and chrX and chrY, remove chrM
     if if_filter_chr == True:
         fc = cluster_df[0].apply(filter_chr)
-        cluster_df = cluster_df[fc == 1]
+        cluster_df = cluster_df[fc == 1].copy()
     # adjust strand based on sequencing data 
     if strand == 2:
         cluster_df[5] = cluster_df[5].apply(rev_strand)
     # get peak from each cluster
     peaks = cluster_df.apply(get_peak,axis = 1)
-    bed_df =  cluster_df.loc[:,[0,1,2,3,4,5]]
+    bed_df =  cluster_df.loc[:,[0,1,2,3,4,5]].copy()
     if flank_win > 1:
         bed_df[1] = peaks - flank_win
         bed_df[2] = peaks + flank_win

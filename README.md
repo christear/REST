@@ -55,8 +55,11 @@ The REST includes several key steps (under developing/debuging).
 	
 	b. predict based on the pre-tained PASBERT model  
 	- `python rest.py filtercluster --run pred --DNABERT_path [DNABERT.path] --input_file [input.cluster] --out_dir [output.dir]  --model [model] --reference [reference.genome]`
-		
-3. count the sequencing reads for each putative PAS (under developing)
+
+3. merge the cluster passed PASBERT filtering from multiple samples
+	- `python rest.py mergecluster xxx`
+
+4. count the sequencing reads for each putative PAS (under developing)
 	
 	a. bulk RNA-seq data 
 	- `python rest.py count_bulk -bam [bam.file] -i [input.cluster] -o [output.count] -s [strandness] --win [width]`
@@ -64,7 +67,7 @@ The REST includes several key steps (under developing/debuging).
 	b. SC-seq data 
 	- `python rest.py count_sc -bam [bam.file] -i [input.cluster] -o [output.count] -s [strandness] --win [width] -f [output.type/count or usage]`
 
-4. APA analyis (under developing)
+5. APA analyis (under developing)
 	
 	a. APA analysis
 	- `python rest.py apa -i [input.count.tab] -c [condition.file] -o [output.apa.events] -a [condition.a] -b [condition.b]`
