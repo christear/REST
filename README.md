@@ -53,7 +53,7 @@ The REST includes several key steps (under developing/debuging).
 	a. retrain/fune-tuen a pre-trained DNABERT model to the PASBERT model 
 	- `python rest.py filter_cluster --run train --DNABERT_path [DNABERT.path] --input_file [input.cluster] --out_dir [output.dir] --reference [reference.genome] --annotation [pas.annotation] --model [pre-trained.DNABERT.model] --round 5 --kmer 5 --motif_file human.pas.motif`
 	
-	b. predict based on the pre-tained PASBERT model  
+	b. predict based on the pre-trained PASBERT model  
 	- `python rest.py filter_cluster --run pred --DNABERT_path [DNABERT.path] --input_file [input.cluster] --out_dir [output.dir]  --model [model] --reference [reference.genome]`
 
 3. merge the cluster passed PASBERT filtering from multiple samples
