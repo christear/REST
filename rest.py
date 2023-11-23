@@ -10,14 +10,23 @@ import sys
 import argparse
 import numpy as np 
 import pandas as pd
-from utils.Cluster import callCluster
+from utils.Cluster import callCluster, mergeCluster
 from utils.PAS_utils import relabelPred
 from utils.Data_process import data_preprocessing
 
 def call_cluster_main(args):
     print(f'[INFO] call cluster based on {args.input_file}')
     callCluster(args.input_file,args.input_format,args.strand,args.output,args.output_dis)
-    
+
+def merge_cluster_main(args):
+    print(f'[INFO] merge cluster based on {args.file_list}')
+    if args.header != True:
+        header = None
+    else:
+        header = 'infer'
+    mergeCluster(args.file_list,args.output,args.read,args.sam_num,args.distance,header)
+
+
 def filter_cluster_main(args):
     print(f'[INFO] filter cluster in {args.input_file}')
     run=args.run
@@ -213,6 +222,17 @@ if __name__ == '__main__':
     filter_cluster.add_argument('--annotation',default=None, help='PAS annotation to define true and false for training the model')
     filter_cluster.add_argument('--reference',default=None, help='the reference genome used to extract sequence flanking peaks of each cluster')
     filter_cluster.set_defaults(func=filter_cluster_main)
+    
+    # subfunction: merge_cluster
+    merge_cluster = subparsers.add_parser('merge_cluster', help = 'merge the cluster passed PASBERT filtering from multiple samples')
+    merge_cluster.add_argument('--file_list', required=True, help = 'input file list seprated by , and each file should be in bed-like format')
+    merge_cluster.add_argument('--read', type = int, default = 5, help = 'threshold of supporting read for a eligiable cluster, this information should be stored as score in bed format file')
+    merge_cluster.add_argument('--sam_num', type = int, default = 2, help = 'mininal number of detected samples required for keeping the cluster')
+    merge_cluster.add_argument('--distance',type = int, default = 25, help = 'distance threshold for merging cluster')
+    merge_cluster.add_argument('--with_header', default = True, help = 'whether the bed file has header')
+    merge_cluster.add_argument('--output', default = 'test.merged.cluster', help = 'the output merged cluster')
+    merge_cluster.set_defaults(func = merge_cluster_main)
+    
     #
     if len(sys.argv) < 2:
         sys.exit()

@@ -46,18 +46,18 @@ The tools has been tested on:
 The REST includes several key steps (under developing/debuging). 
 
 1. call cluster based on RNA 3'End Sequencing data, required input should be in bam or bed format. The method was derived from the previous publications [1-2]. 
-	- `python rest.py callcluster --input_file [input.file] --input_format [bam/bed] --strand 2 --output [output.cluster] --output_dis [cluster.distance]`
+	- `python rest.py call_cluster --input_file [input.file] --input_format [bam/bed] --strand 2 --output [output.cluster] --output_dis [cluster.distance]`
 
 2. filter reliable clusters as putative polyadenylation sites (PASs)
 	
 	a. retrain/fune-tuen a pre-trained DNABERT model to the PASBERT model 
-	- `python rest.py filtercluster --run train --DNABERT_path [DNABERT.path] --input_file [input.cluster] --out_dir [output.dir] --reference [reference.genome] --annotation [pas.annotation] --model [pre-trained.DNABERT.model] --round 5 --kmer 5 --motif_file human.pas.motif`
+	- `python rest.py filter_cluster --run train --DNABERT_path [DNABERT.path] --input_file [input.cluster] --out_dir [output.dir] --reference [reference.genome] --annotation [pas.annotation] --model [pre-trained.DNABERT.model] --round 5 --kmer 5 --motif_file human.pas.motif`
 	
 	b. predict based on the pre-tained PASBERT model  
-	- `python rest.py filtercluster --run pred --DNABERT_path [DNABERT.path] --input_file [input.cluster] --out_dir [output.dir]  --model [model] --reference [reference.genome]`
+	- `python rest.py filter_cluster --run pred --DNABERT_path [DNABERT.path] --input_file [input.cluster] --out_dir [output.dir]  --model [model] --reference [reference.genome]`
 
 3. merge the cluster passed PASBERT filtering from multiple samples
-	- `python rest.py mergecluster xxx`
+	- `python rest.py merge_cluster --file_list [file1.txt,file2.txt,file3.txt...] --read 5 --sam_num 2 --distance 25 --output [merged.pas.txt]`
 
 4. count the sequencing reads for each putative PAS (under developing)
 	
