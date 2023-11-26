@@ -59,7 +59,7 @@ The REST includes several key functions (some are still under development/debugg
 The details of each function are shown below. 
 
 1. call cluster based on RNA 3'End Sequencing data, required input should be in bam or bed format. The method was derived from the previous publications [1-2]. 
-	- `python rest.py call_cluster --input_file [input.file] --input_format [bam/bed] --strand 2 --output [output.cluster] --output_dis [cluster.distance]`
+	- `python rest.py call_cluster --input_file [input.file] --input_format [bam/bed] --strand 2 --output [output.cluster] --output_dis [cluster.distance]`. The --strand option stands for the strand information of the sequencing data. 1: forward strand; 2: reverse strand.
 
 2. filter reliable clusters as putative polyadenylation sites (PASs)
 	
@@ -88,7 +88,7 @@ The details of each function are shown below.
 	a. weighted 3' UTR length index (WULI) analysis 
 	- `python rest.py wuli -i [input.count.tab] -c [condition.file] -o [output.apa.events] -a [condition.a] -b [condition.b]`
 #### 4. The output
-Output of each functions usally in a bed-like format, except the 'retrain' option in filter_cluster will output a fine-tuned DNABERT model (PASBERT) that including several files named as:config.json, pytorch_model.bin, special_tokens_map.json, tokenizer_config.json, training_args.bin, vocab.txt
+Output of each functions usally in a bed-like format, except the 'retrain' option in filter_cluster will output a directory contains the fine-tuned DNABERT model (PASBERT), inlcuding several files named as:config.json, pytorch_model.bin, special_tokens_map.json, tokenizer_config.json, training_args.bin, vocab.txt.  
 
 #### 5. Reference
 1. Hoque, M., Ji, Z., Zheng, D., Luo, W., Li, W., You, B., ... & Tian, B. (2013). Analysis of alternative cleavage and polyadenylation by 3′ region extraction and deep sequencing. Nature methods, 10(2), 133-139. 
