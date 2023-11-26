@@ -20,7 +20,7 @@ def call_cluster_main(args):
 
 def merge_cluster_main(args):
     print(f'[INFO] merge cluster based on {args.file_list}')
-    if args.header != True:
+    if args.with_header != True:
         header = None
     else:
         header = 'infer'
@@ -195,7 +195,7 @@ if __name__ == '__main__':
     subparsers = parser.add_subparsers(help = 'sub-command help')
     
     # subfunction: call_cluster
-    call_cluster = subparsers.add_parser('call_cluster', help='call cluster based on alignment bam/bed file')
+    call_cluster = subparsers.add_parser('call_cluster', help='call cluster based on the alignment bam/bed file')
     call_cluster.add_argument('--input_file', required=True, help = 'input file in bam or bed format')
     call_cluster.add_argument('--input_format', default = 'bed', help = 'format of the input file')
     call_cluster.add_argument('--strand', type = int, default = 2, help = 'strand of the sequencing data that generate the input file. 1: forward strand, 2: reverse strand, 0: strandless')
@@ -204,7 +204,7 @@ if __name__ == '__main__':
     call_cluster.set_defaults(func = call_cluster_main)
     
     # subfunction: filter_cluster
-    filter_cluster = subparsers.add_parser('filter_cluster', help = 'filter cluster file based on fine-tuned DNABERT models')
+    filter_cluster = subparsers.add_parser('filter_cluster', help = 'filter cluster and fine-tuned DNABERT models for true/false PAS')
     filter_cluster.add_argument('--run', default = 'pred', help = 'pred/train: only predict true/false for fintering, or also train a fine-tuned model')
     filter_cluster.add_argument('--input_file', required = True, help = 'input file of cluster in bed-like format')
     filter_cluster.add_argument('--rounds', type = int, default = 5, help = 'rounds of the training, eg: 5')
