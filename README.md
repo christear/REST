@@ -88,10 +88,12 @@ The details of each function are shown below.
 	a. weighted 3' UTR length index (WULI) analysis 
 	- `python rest.py wuli -i [input.count.tab] -c [condition.file] -o [output.apa.events] -a [condition.a] -b [condition.b]`
 #### 4. The output
+Output of each functions usally in a bed-like format, except the 'retrain' option in filter_cluster will output a fine-tuned DNABERT model (PASBERT) that including several files named as:config.json, pytorch_model.bin, special_tokens_map.json, tokenizer_config.json, training_args.bin, vocab.txt
+
 #### 5. Reference
-1.Hoque, M., Ji, Z., Zheng, D., Luo, W., Li, W., You, B., ... & Tian, B. (2013). Analysis of alternative cleavage and polyadenylation by 3′ region extraction and deep sequencing. Nature methods, 10(2), 133-139. \
-2.Xiao, M. S., Zhang, B., Li, Y. S., Gao, Q., Sun, W., & Chen, W. (2016). Global analysis of regulatory divergence in the evolution of mouse alternative polyadenylation. Molecular systems biology, 12(12), 890. \
-3.Long, Y., Zhang, B., Tian, S., Chan, J. J., Zhou, J., Li, Z., ... & Gao, X. (2023). Accurate transcriptome-wide identification and quantification of alternative polyadenylation from RNA-seq data with APAIQ. Genome Research, 33(4), 644-657.
+1. Hoque, M., Ji, Z., Zheng, D., Luo, W., Li, W., You, B., ... & Tian, B. (2013). Analysis of alternative cleavage and polyadenylation by 3′ region extraction and deep sequencing. Nature methods, 10(2), 133-139. 
+2. Xiao, M. S., Zhang, B., Li, Y. S., Gao, Q., Sun, W., & Chen, W. (2016). Global analysis of regulatory divergence in the evolution of mouse alternative polyadenylation. Molecular systems biology, 12(12), 890. 
+3. Long, Y., Zhang, B., Tian, S., Chan, J. J., Zhou, J., Li, Z., ... & Gao, X. (2023). Accurate transcriptome-wide identification and quantification of alternative polyadenylation from RNA-seq data with APAIQ. Genome Research, 33(4), 644-657.
 
 
 
