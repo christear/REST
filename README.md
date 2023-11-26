@@ -43,14 +43,27 @@ The tools has been tested on:
 2, SC-seq data from 10X genomics Chomium System (https://www.10xgenomics.com/instruments/chromium-x-series)
 
 #### 2. Getting Started
-The REST includes several key steps (under developing/debuging). 
+The REST includes several key functions (some are still under development/debugging). \
+
+1. call_cluster: call cluster based on 3' end-seq data based on the method described in previous study[1,2]. \
+
+2. filter_cluster: filter the cluster based on sequence features fine-tuned by the DNABERT model. It has two options, including 'retrain' or 'pred'. \
+- The 'retrain' option will fine-tune a pre-trained DNABERT model based on the identified cluster and annotation to define true/false PAS as well as an active-learning-based strategy to re-label true/false for each round of prediction. Finally, A fine-tuned model (PASBERT) will be returned. \
+- The pred option will predict the true/false PAS for each cluster based on a fine-tuned model (PASBERT). \
+
+3. merge_cluster: merge the filtered cluster from multiple samples and refine the peak based on the most frequent position across multiple samples. \
+
+4. annotate_cluster: annotation PAS with a gene annotation GTF file as described in a previous study[3].
+ 
+#### 3. Tutorial
+The details of each function are shown below. 
 
 1. call cluster based on RNA 3'End Sequencing data, required input should be in bam or bed format. The method was derived from the previous publications [1-2]. 
 	- `python rest.py call_cluster --input_file [input.file] --input_format [bam/bed] --strand 2 --output [output.cluster] --output_dis [cluster.distance]`
 
 2. filter reliable clusters as putative polyadenylation sites (PASs)
 	
-	a. retrain/fune-tuen a pre-trained DNABERT model to the PASBERT model 
+	a. retrain/fune-tune a pre-trained DNABERT model to the PASBERT model 
 	- `python rest.py filter_cluster --run train --DNABERT_path [DNABERT.path] --input_file [input.cluster] --out_dir [output.dir] --reference [reference.genome] --annotation [pas.annotation] --model [pre-trained.DNABERT.model] --round 5 --kmer 5 --motif_file human.pas.motif`
 	
 	b. predict based on the pre-trained PASBERT model  
@@ -59,7 +72,7 @@ The REST includes several key steps (under developing/debuging).
 3. merge the cluster passed PASBERT filtering from multiple samples
 	- `python rest.py merge_cluster --file_list [file1.txt,file2.txt,file3.txt...] --read 5 --sam_num 2 --distance 25 --output [merged.pas.txt]`
 
-4. count the sequencing reads for each putative PAS (under developing)
+4. count the sequencing reads for each putative PAS (under development)
 	
 	a. bulk RNA-seq data 
 	- `python rest.py count_bulk -bam [bam.file] -i [input.cluster] -o [output.count] -s [strandness] --win [width]`
@@ -67,17 +80,18 @@ The REST includes several key steps (under developing/debuging).
 	b. SC-seq data 
 	- `python rest.py count_sc -bam [bam.file] -i [input.cluster] -o [output.count] -s [strandness] --win [width] -f [output.type/count or usage]`
 
-5. APA analyis (under developing)
+5. APA analyis (under development)
 	
 	a. APA analysis
 	- `python rest.py apa -i [input.count.tab] -c [condition.file] -o [output.apa.events] -a [condition.a] -b [condition.b]`
 	
 	a. weighted 3' UTR length index (WULI) analysis 
 	- `python rest.py wuli -i [input.count.tab] -c [condition.file] -o [output.apa.events] -a [condition.a] -b [condition.b]`
-
-#### 3. Synopsis
-#### 4. Tutorial
-#### 5. The output
+#### 4. The output
+#### 5. Reference
+1.Hoque, M., Ji, Z., Zheng, D., Luo, W., Li, W., You, B., ... & Tian, B. (2013). Analysis of alternative cleavage and polyadenylation by 3′ region extraction and deep sequencing. Nature methods, 10(2), 133-139.
+2.Xiao, M. S., Zhang, B., Li, Y. S., Gao, Q., Sun, W., & Chen, W. (2016). Global analysis of regulatory divergence in the evolution of mouse alternative polyadenylation. Molecular systems biology, 12(12), 890.
+3.Long, Y., Zhang, B., Tian, S., Chan, J. J., Zhou, J., Li, Z., ... & Gao, X. (2023). Accurate transcriptome-wide identification and quantification of alternative polyadenylation from RNA-seq data with APAIQ. Genome Research, 33(4), 644-657.
 
 
 
