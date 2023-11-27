@@ -45,7 +45,7 @@ The tools has been tested on:
 #### 2. Getting Started
 The REST includes several key functions (some are still under development/debugging). \
 
-1. call_cluster: call cluster based on 3' end-seq data based on the method described in previous study[1,2]. 
+1. call_cluster: call cluster based on 3' end-seq data using the method from previous studies[1,2]. 
 
 2. filter_cluster: filter the cluster based on sequence features fine-tuned by the DNABERT model. It has two options, including 'retrain' or 'pred'. 
 - The 'retrain' option will fine-tune a pre-trained DNABERT model based on the identified cluster and annotation to define true/false PAS as well as an active-learning-based strategy to re-label true/false for each round of prediction. Finally, A fine-tuned model (PASBERT) will be returned. 
