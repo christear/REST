@@ -24,7 +24,7 @@ def merge_cluster_main(args):
         header = None
     else:
         header = 'infer'
-    mergeCluster(args.file_list,args.output,args.read,args.sam_num,args.distance,header)
+    mergeCluster(args.file_list,args.output,args.read,args.sam_num,args.distance,header,args.sam_label)
 
 
 def filter_cluster_main(args):
@@ -231,6 +231,7 @@ if __name__ == '__main__':
     merge_cluster.add_argument('--distance',type = int, default = 25, help = 'distance threshold for merging cluster')
     merge_cluster.add_argument('--with_header', default = True, help = 'whether the bed file has header')
     merge_cluster.add_argument('--output', default = 'test.merged.cluster', help = 'the output merged cluster')
+    merge_cluster.add_argument('--sam_label',default = None, help = 'short label of each sample/file')
     merge_cluster.set_defaults(func = merge_cluster_main)
     
     #

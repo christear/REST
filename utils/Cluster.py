@@ -286,20 +286,29 @@ def refinePeak (name_str,bed12_df):
     
     
 # merge cluster from multiple samples, the cluster file from each samples should be seperated with "," 
-def mergeCluster (cluster_tsv_files,output_cluster,read_cut,sam_num_cut,dis_cut,header):
+def mergeCluster (cluster_tsv_files,output_cluster,read_cut,sam_num_cut,dis_cut,header,sam_lab):
     file_list = cluster_tsv_files.split(',')
     print(f'### merging cluster from {len(file_list)} files')
+    if sam_lab != None:
+        lab_list = sam_lab.split(',')
+        if len(file_list) != len(lab_list):
+            print(f'### warning number of files {len(file_list)} and number of labels {len(lab_list)} does not match')
+            lab_list = None
     i = 1
     df_list = []
     for _file in file_list:
         c_df = pd.read_csv(_file,sep = '\t',header = header)
+        if lab_list != None:
+            each_sam = lab_list[i - 1]
+        else:
+            each_sam = 'S' + str(i)
         # check if the file have head 
         if c_df.columns[3] != 'name':
-            c_df.iloc[:,3] = 'S' + str(i) + ':' + c_df.iloc[:,3]
+            c_df.iloc[:,3] = each_sam + ':' + c_df.iloc[:,3]
             if read_cut != None:
                 c_df = c_df.loc[c_df.iloc[:,4] > read_cut].copy()
         else:
-            c_df['name'] = 'S'+ str(i) + ':' + c_df['name']
+            c_df['name'] = each_sam + ':' + c_df['name']
             if read_cut != None:
                 c_df = c_df.loc[c_df['score'] > read_cut].copy()
         c_df = c_df.iloc[:,0:6].copy()
@@ -331,6 +340,7 @@ def mergeCluster (cluster_tsv_files,output_cluster,read_cut,sam_num_cut,dis_cut,
             for cl in output_list:
                 w.write('\t'.join(str(_e) for _e in cl) + '\n')
     return filtered_df
+    
     
 
 
