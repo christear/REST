@@ -2,6 +2,7 @@
 # python=3.6-3.10
 # Bin Zhang
 # Data: Nov 14, 2023
+# Last modidication: Nov 28, 2023
 # version: 1.0
 # ENV:
 
@@ -27,7 +28,7 @@ def merge_cluster_main(args):
     mergeCluster(args.file_list,args.output,args.read,args.sam_num,args.distance,header,args.sam_label)
 
 def annotate_PAS_main(args):
-    print(f'[INFO] annotation PAS for {args.input_pas}')
+    print(f'[INFO] annotate PAS for {args.input_pas}')
     if args.with_header != None:
         header = 'infer'
     else:
