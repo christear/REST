@@ -46,7 +46,7 @@ def count_PAS_main(args):
     end = args.end
     thread = args.thread
     #multiple = args.multiple
-    if args.data_type == 'bulk':
+    if data_type == 'bulk':
         print('[INFO] counting for bulk RNA-seq data')
         if args.with_header != None:
             header = 'infer'
@@ -75,10 +75,10 @@ def count_PAS_main(args):
             else:
                 print(f'### counting based on whole read rather than end')
                 os.system(f'featureCounts -a {temp} -F SAF -o {output} -s {strand} -T {thread} {bam}')
-    elif 'sc' in args.data_type:
+    elif 'sc' in data_type:
         print('[INFO] counting for scRNA-seq data')
     else:
-        print(f'[INFO] unknown data type{args.data_type}')
+        print(f'[INFO] unknown data type{data_type}')
     print('### counting Done')
 
 def filter_cluster_main(args):
