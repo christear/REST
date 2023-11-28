@@ -72,15 +72,17 @@ The details of each function are shown below.
 3. merge the cluster passed PASBERT filtering from multiple samples
 	- `python rest.py merge_cluster --file_list [file1.txt,file2.txt,file3.txt...] --read 5 --sam_num 2 --distance 25 --output [merged.pas.txt]`
 
-4. count the sequencing reads for each putative PAS (under development)
+4. annotate the putative PAS based on gene annotation in GTF format 
+	- `python rest.py annotate_pas --input_pas pas_file --gtf annotation_gtf --output output --header`
 	
+5. count the sequencing reads for each putative PAS (under development)
 	a. bulk RNA-seq data 
 	- `python rest.py count_bulk -bam [bam.file] -i [input.cluster] -o [output.count] -s [strandness] --win [width]`
 	
 	b. SC-seq data 
 	- `python rest.py count_sc -bam [bam.file] -i [input.cluster] -o [output.count] -s [strandness] --win [width] -f [output.type/count or usage]`
 
-5. APA analyis (under development)
+6. APA analyis (under development)
 	
 	a. APA analysis
 	- `python rest.py apa -i [input.count.tab] -c [condition.file] -o [output.apa.events] -a [condition.a] -b [condition.b]`
