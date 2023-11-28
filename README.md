@@ -58,7 +58,7 @@ The REST includes several key functions (some are still under development/debugg
 
 4. annotate_PAS: annotate PAS with a gene annotation GTF file as described in a previous study[3].
 
-5. count_PAS: count for each PAS from bam file. The bam file could be bulk 3\'-end sequencing data or scRNA-seq data. 
+5. count_PAS: count the number of supporting reads for each PAS from bam file. The bam file could be bulk 3\'-end sequencing data or scRNA-seq data. 
  
 #### 3. Tutorial
 The details of each function are shown below. 
