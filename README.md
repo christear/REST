@@ -43,7 +43,7 @@ The tools has been tested on:
 2, SC-seq data from 10X genomics Chomium System (https://www.10xgenomics.com/instruments/chromium-x-series)
 
 #### 2. Getting Started
-The REST includes several key functions (some are still under development/debugging). \
+The REST includes several key functions (some are still under development/debugging). 
 
 1. call_cluster: call cluster based on 3' end-seq data using the method from previous studies[1,2]. 
 
