@@ -79,7 +79,7 @@ The details of each function are shown below.
 	- `python rest.py merge_cluster --file_list [file1.txt,file2.txt,file3.txt...] --read 5 --sam_num 2 --distance 25 --output [merged.pas.txt]`
 
 4. annotate the putative PAS based on gene annotation in GTF format 
-	- `python rest.py annotate_pas --input_pas pas_file --gtf annotation_gtf --output output --header`
+	- `python rest.py annotate_PAS --input_pas pas_file --gtf annotation_gtf --output output --header`
 	
 5. count the sequencing reads for each putative PAS
 	a. bulk RNA-seq data 
