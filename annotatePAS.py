@@ -177,10 +177,11 @@ def annotatePAS(input_pas,anno_gtf,output,header):
         #chr_pas = chr_pas_bed.to_dataframe()
         chr_pas = pas_df[pas_df.iloc[:,0] == _chr].copy()
         for index,row in chr_pas.iterrows():
-            _pas = row['name']
+            #_pas = row['name']
             out_line = row.values.tolist()
+            _pas = out_line[3]
             _type = 'NA'
-            if 'name' in last_exon.columns and _pas in last_exon_pas['name'].values:
+            if 'name' in last_exon_pas.columns and _pas in last_exon_pas['name'].values:
                 each = last_exon_pas[last_exon_pas['name'] == _pas].copy()
                 _type = 'last_exon'
             elif 'name' in pas_txn1_df.columns and _pas in pas_txn1_df['name'].values:

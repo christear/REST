@@ -66,6 +66,14 @@ def mergeCluster (cluster_tsv_files,output_cluster,read_cut,sam_num_cut,dis_cut,
     df_list = []
     for _file in file_list:
         c_df = pd.read_csv(_file,sep = '\t',header = header)
+        n1 = c_df.shape[0]
+        # filter the true PAS based on prediction from PASBERT
+        if 'pred_01' in c_df.columns: 
+            c_df = c_df[c_df['pred_01'] == 1].copy()
+        else:
+            c_df = c_df[c_df.iloc[:,-1] == 1].copy()
+        n2 = c_df.shape[0]
+        print(f'### {n2} out {n1} cluster passed filtering in the file {_file}')
         if lab_list != None:
             each_sam = lab_list[i - 1]
         else:

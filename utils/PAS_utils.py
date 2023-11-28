@@ -11,6 +11,9 @@ import pandas as pd
 #from seq_utils import kmer2seq
 import pybedtools
 from pybedtools import BedTool,example_filename
+#
+from gtfparse import read_gtf
+import portion as P
 
 # connect kmer to sequence: wrote by myself 
 def kmer2seq2 (kmer_seq):

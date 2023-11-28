@@ -14,6 +14,7 @@
 ### additional requirements for REST
 numpy
 pysam
-#portion
+portion=2.3.0
+gtfparse=1.0.7
 cigar
 #progressbar
