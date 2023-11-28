@@ -53,7 +53,7 @@ The REST includes several key functions (some are still under development/debugg
 
 3. merge_cluster: merge the filtered cluster from multiple samples and refine the peak based on the most frequent position across multiple samples. 
 
-4. annotate_cluster: annotation PAS with a gene annotation GTF file as described in a previous study[3].
+4. annotate_PAS: annotate PAS with a gene annotation GTF file as described in a previous study[3].
  
 #### 3. Tutorial
 The details of each function are shown below. 
