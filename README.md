@@ -49,7 +49,7 @@ The REST includes several key functions (some are still under development/debugg
 
 2. filter_cluster: filter the cluster based on sequence features fine-tuned by the DNABERT model. It has two options, including 'retrain' or 'pred'. 
 - The 'retrain' option will fine-tune a pre-trained DNABERT model based on the identified cluster and annotation to define true/false PAS as well as an active-learning-based strategy to re-label true/false for each round of prediction. Finally, A fine-tuned model (PASBERT) will be returned. 
-- The pred option will predict the true/false PAS for each cluster based on a fine-tuned model (PASBERT). 
+- The ‘pred’ option will predict the true/false PAS for each cluster based on a fine-tuned model (PASBERT). 
 
 3. merge_cluster: merge the filtered cluster from multiple samples and refine the peak based on the most frequent position across multiple samples. 
 
