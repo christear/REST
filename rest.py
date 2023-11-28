@@ -11,7 +11,7 @@ import argparse
 import numpy as np 
 import pandas as pd
 from utils.Cluster import callCluster, mergeCluster
-from utils.PAS_utils import relabelPred
+from utils.PAS_utils import relabelPred, annotatePAS
 from utils.Data_process import data_preprocessing
 
 def call_cluster_main(args):
@@ -26,6 +26,14 @@ def merge_cluster_main(args):
         header = 'infer'
     mergeCluster(args.file_list,args.output,args.read,args.sam_num,args.distance,header,args.sam_label)
 
+def annotate_PAS_main(args):
+    print(f'[INFO] annotation PAS for {args.input_pas}')
+    if args.with_header != None:
+        header = 'infer'
+    else:
+        header = args.with_header
+    annotatePAS(args.input_pas,args.gtf,args.output,header,args.distance)
+    
 
 def filter_cluster_main(args):
     print(f'[INFO] filter cluster in {args.input_file}')
@@ -233,6 +241,15 @@ if __name__ == '__main__':
     merge_cluster.add_argument('--output', default = 'test.merged.cluster', help = 'the output merged cluster')
     merge_cluster.add_argument('--sam_label',default = None, help = 'short label of each sample/file')
     merge_cluster.set_defaults(func = merge_cluster_main)
+    
+    # subfunction: annotate_PAS
+    annotate_PAS = subparsers.add_parser('annotate_PAS', help = 'annotate PAS based on gene annotation gtf')
+    annotate_PAS.add_argument('--input_pas', required = True, help = 'input file of putative PAS in bed-like format')
+    annotate_PAS.add_argument('--gtf', required = True, help = 'gene annotation in gtf format, required gene_id, gene_name, gene_type attributes')
+    annotate_PAS.add_argument('--with_header', default = None, help = 'whether the input file has header')
+    annotate_PAS.add_argument('--output', default = 'test.anno', help = 'the output PAS with annotation in bed-like format')
+    annotate_PAS.add_argument('--distance',default = 24, type = int, help = 'distance to define overlap')
+    annotate_PAS.set_defaults(func = annotate_PAS_main)
     
     #
     if len(sys.argv) < 2:

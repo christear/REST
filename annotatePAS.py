@@ -95,13 +95,14 @@ def neighborReg (bed_line,reg_len,direction):
     return values
     
 # split the genome into 7 distinct categories, including: terminal_exon, ups_exon, intron, ncRNA, ups_tss1k, extend_pas10k, intergenic 
-def annotatePAS(input_pas,anno_gtf,output,header):
+def annotatePAS(input_pas,anno_gtf,output,header,distance):
     print(f'### reading PAS from {input_pas}')
     pas_df = pd.read_csv(input_pas,sep = '\t',header = header)
     # default distance is 50bp
     pas_win50 = pas_df.copy()
-    pas_win50.iloc[:,1] = pas_win50.iloc[:,2] - 25
-    pas_win50.iloc[:,2] = pas_win50.iloc[:,2] + 25
+    #distance = 24
+    pas_win50.iloc[:,1] = pas_win50.iloc[:,2] - distance
+    pas_win50.iloc[:,2] = pas_win50.iloc[:,2] + distance
     # pas_bed = BedTool.from_dataframe(pas_df)
     print(f'### loading annotaton from {anno_gtf}')
     gtf_df = read_gtf(anno_gtf)
@@ -217,7 +218,7 @@ def annotatePAS(input_pas,anno_gtf,output,header):
         for _chr in all_output:
             for each_line in all_output[_chr]:
                 w.write('\t'.join(str(_e) for _e in each_line) + '\n')
-    print('### Done')
+    print('### annotating PAS Done')
     
 if len(sys.argv) < 4:
     print('python annotatePAS.py input_pas annotation_gtf output header')
