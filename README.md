@@ -82,7 +82,7 @@ The details of each function are shown below.
 	
 5. count the sequencing reads for each putative PAS
 	a. bulk RNA-seq data 
-	- `python rest.py count_PAS --bam [bam.file] --pas [pas.file] --output [output.count] --strand [0/1/2] --win [24] --end [5/3]`
+	- `python rest.py count_PAS --bam [bam.file] --pas [pas.file] --output [output.count] --strand [0/1/2] --win [24] --end [5/3] --thread 20`
 	
 	b. SC-seq data (under development/debug)
 	- `python rest.py count_sc -bam [bam.file] -i [input.cluster] -o [output.count] -s [strandness] --win [width] -f [output.type/count or usage]`
