@@ -60,6 +60,7 @@ The REST includes several key functions (some are still under development/debugg
 
 5. count_PAS: count the number of supporting reads for each PAS from bam file. The bam file could be bulk 3\'-end sequencing data or scRNA-seq data. 
  
+6. calculate PAS usage (PAU) or weighted 3' UTR length index (WULI) as mentioned in the previous study[3].
 #### 3. Tutorial
 The details of each function are shown below. 
 
@@ -82,18 +83,19 @@ The details of each function are shown below.
 	
 5. count the sequencing reads for each putative PAS
 	a. bulk RNA-seq data 
-	- `python rest.py count_PAS --bam [bam.file] --pas [pas.file] --output [output.count] --strand [0/1/2] --win [24] --end [5/3] --thread 20`
+	- `python rest.py count_PAS --bam [bam.file] --data_type bulk --pas [pas.file] --output [output.count] --strand [0/1/2] --win [24] --end [5/3] --thread 20`
 	
 	b. SC-seq data (under development/debug)
-	- `python rest.py count_sc -bam [bam.file] -i [input.cluster] -o [output.count] -s [strandness] --win [width] -f [output.type/count or usage]`
+	- `python rest.py count_PAS --bam [bam.file] --data_type sc --pas [pas.file] --output [output.count] --strand [0/1/2] --win [24] --end [5/3] --thread 20`
 
 6. APA analyis (under development)
 	
-	a. APA analysis
-	- `python rest.py apa -i [input.count.tab] -c [condition.file] -o [output.apa.events] -a [condition.a] -b [condition.b]`
+	a. calculate PAS usage (PAU) for each PAS 
+	- `python rest.py cal_pau -i [input.count.tab] -c [condition.file] -o [output.apa.events] -a [condition.a] -b [condition.b]`
 	
-	a. weighted 3' UTR length index (WULI) analysis 
-	- `python rest.py wuli -i [input.count.tab] -c [condition.file] -o [output.apa.events] -a [condition.a] -b [condition.b]`
+	a. calculate weighted 3' UTR length index (WULI)  
+	- `python rest.py cal_wuli -i [input.count.tab] -c [condition.file] -o [output.apa.events] -a [condition.a] -b [condition.b]`
+
 #### 4. The output
 Output of each functions usally in a bed-like format, except the 'retrain' option in filter_cluster will output a directory contains the fine-tuned DNABERT model (PASBERT), inlcuding several files named as:config.json, pytorch_model.bin, special_tokens_map.json, tokenizer_config.json, training_args.bin, vocab.txt.  
 
