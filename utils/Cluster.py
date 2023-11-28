@@ -294,10 +294,21 @@ def mergeCluster (cluster_tsv_files,output_cluster,read_cut,sam_num_cut,dis_cut,
         if len(file_list) != len(lab_list):
             print(f'### warning number of files {len(file_list)} and number of labels {len(lab_list)} does not match')
             lab_list = None
+    else:
+        lab_list = None
+    #
     i = 1
     df_list = []
     for _file in file_list:
         c_df = pd.read_csv(_file,sep = '\t',header = header)
+        n1 = c_df.shape[0]
+        # filter the true PAS based on prediction from PASBERT
+        if 'pred_01' in c_df.columns: 
+            c_df = c_df[c_df['pred_01'] == 1].copy()
+        else:
+            c_df = c_df[c_df.iloc[:,-1] == 1].copy()
+        n2 = c_df.shape[0]
+        print(f'### {n2} out {n1} cluster passed filtering in the file {_file}')
         if lab_list != None:
             each_sam = lab_list[i - 1]
         else:
@@ -334,6 +345,7 @@ def mergeCluster (cluster_tsv_files,output_cluster,read_cut,sam_num_cut,dis_cut,
         print(f'### processing {len(chr_cuid)} cluster from chromosome {_chr}')
         peak_list = list(map(lambda _c: refinePeak(_c,chr_wo_df), chr_cuid))
         output_list += peak_list
+        #break
     if output_cluster != None:
         #filtered_df.to_csv(output_cluster, index = False, sep = '\t')
         with open (output_cluster,'w') as w:
