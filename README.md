@@ -33,6 +33,9 @@ To retrain the model (PASBERT) for polyadenylation site (PAS) analysis , please 
 
 To directly predict/filter true PAS, please download our finetuned model from Google Driver  (https://drive.google.com/drive/folders/1Ns28TP24QpTPqTX-JeYSd92iNG-ZTS2q?usp=share_link)
 
+To run count functions, please install featureCounts \
+`conda install -c bioconda subread`
+
 #### 1. Introduction
 The REST is a toolkit for RNA 3'End Sequencing data analysis, which could be applied on both bulk RNA-seq data from mutiple 3'End Sequencing methods and common Single cell sequencing (SC-seq) data, including 10X genomics Chromium System.
 
@@ -54,6 +57,8 @@ The REST includes several key functions (some are still under development/debugg
 3. merge_cluster: merge the filtered cluster from multiple samples and refine the peak based on the most frequent position across multiple samples. 
 
 4. annotate_PAS: annotate PAS with a gene annotation GTF file as described in a previous study[3].
+
+5. count_PAS: count for each PAS from bam file. The bam file could be bulk 3\'-end sequencing data or scRNA-seq data. 
  
 #### 3. Tutorial
 The details of each function are shown below. 
@@ -75,11 +80,11 @@ The details of each function are shown below.
 4. annotate the putative PAS based on gene annotation in GTF format 
 	- `python rest.py annotate_pas --input_pas pas_file --gtf annotation_gtf --output output --header`
 	
-5. count the sequencing reads for each putative PAS (under development)
+5. count the sequencing reads for each putative PAS
 	a. bulk RNA-seq data 
-	- `python rest.py count_bulk -bam [bam.file] -i [input.cluster] -o [output.count] -s [strandness] --win [width]`
+	- `python rest.py count_PAS --bam [bam.file] --pas [pas.file] --output [output.count] --strand [0/1/2] --win [24] --end [5/3]`
 	
-	b. SC-seq data 
+	b. SC-seq data (under development/debug)
 	- `python rest.py count_sc -bam [bam.file] -i [input.cluster] -o [output.count] -s [strandness] --win [width] -f [output.type/count or usage]`
 
 6. APA analyis (under development)

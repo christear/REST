@@ -34,7 +34,52 @@ def annotate_PAS_main(args):
     else:
         header = args.with_header
     annotatePAS(args.input_pas,args.gtf,args.output,header,args.distance)
-    
+
+def count_PAS_main(args):
+    bam = args.bam
+    data_type = args.data_type
+    pas = args.pas
+    win = args.win
+    output = args.output
+    temp = args.temp
+    strand = args.strand
+    end = args.end
+    thread = args.thread
+    #multiple = args.multiple
+    if args.data_type == 'bulk':
+        print('[INFO] counting for bulk RNA-seq data')
+        if args.with_header != None:
+            header = 'infer'
+        else:
+            header = args.with_header
+        #
+        pas_df = pd.read_csv(args.pas,sep = '\t',header = header)
+        saf_df = pas_df.iloc[:,[3,0,1,2,5]].copy()
+        saf_df.columns = ['GeneID','Chr','Start','End','Strand']
+        saf_df.to_csv(args.temp,index = False, sep = '\t')
+        if args.multiple == True:
+            print('### counting with mutlipe-mapped reads')
+            if end == 5 or end == 3:
+                print(f'### counting based on read {end} prime end')
+                os.system(f'featureCounts -a {temp} -F SAF -o {output} -s {strand} --read2pos {end} -T {thread} -M {bam}')
+                #os.system(f'rm -f {temp}')
+            else:
+                print(f'### counting based on whole read rather than end')
+                os.system(f'featureCounts -a {temp} -F SAF -o {output} -s {strand} -T {thread} -M {bam}')
+        else:
+            print('### counting without mutlipe-mapped reads')
+            if end == 5 or end == 3:
+                print(f'### counting based on read {end} prime end')
+                os.system(f'featureCounts -a {temp} -F SAF -o {output} -s {strand} --read2pos {end} -T {thread} {bam}')
+                #os.system(f'rm -f {temp}')
+            else:
+                print(f'### counting based on whole read rather than end')
+                os.system(f'featureCounts -a {temp} -F SAF -o {output} -s {strand} -T {thread} {bam}')
+    elif 'sc' in args.data_type:
+        print('[INFO] counting for scRNA-seq data')
+    else:
+        print(f'[INFO] unknown data type{args.data_type}')
+    print('### counting Done')
 
 def filter_cluster_main(args):
     print(f'[INFO] filter cluster in {args.input_file}')
@@ -251,6 +296,21 @@ if __name__ == '__main__':
     annotate_PAS.add_argument('--output', default = 'test.anno', help = 'the output PAS with annotation in bed-like format')
     annotate_PAS.add_argument('--distance',default = 24, type = int, help = 'distance to define overlap')
     annotate_PAS.set_defaults(func = annotate_PAS_main)
+    
+    #subfunction: count_PAS: for more options need to rewrite the code 
+    count_PAS = subparsers.add_parser('count_PAS', help = 'count reads supporting each PAS from bam file')
+    count_PAS.add_argument('--bam', required = True, help = 'bam file of 3\'-end sequencing data or single-cell sequencing data')
+    count_PAS.add_argument('--data_type', default = 'bulk', help = 'the type of bam data, either bulk or sc(scRNA-seq)')
+    count_PAS.add_argument('--pas', required = True, help = 'file of PAS in bed format')
+    count_PAS.add_argument('--with_header', default = None, help = 'whether the PAS file has header')
+    count_PAS.add_argument('--win', type = int, default = 24, help = 'length of the window flaking the pas for counting')
+    count_PAS.add_argument('--output', default = 'pas.count', help = 'the output PAS with read count')
+    count_PAS.add_argument('--temp',default = 'temp.saf', help = 'temporary file for counting')
+    count_PAS.add_argument('--strand',default = 2, help = 'strand of the sequencing data. 1: forward strand, 2: reverse strand, 3: strandless')
+    count_PAS.add_argument('--end',default = 3,type = int, help = 'count based on read 3 or 5 end')
+    count_PAS.add_argument('--multiple',default = False, help = 'count multi-mapping reads or not')
+    count_PAS.add_argument('--thread',default = 1, help = 'number of the threads')
+    count_PAS.set_defaults(func = count_PAS_main)
     
     #
     if len(sys.argv) < 2:
