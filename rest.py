@@ -56,6 +56,8 @@ def count_PAS_main(args):
         pas_df = pd.read_csv(args.pas,sep = '\t',header = header)
         saf_df = pas_df.iloc[:,[3,0,1,2,5]].copy()
         saf_df.columns = ['GeneID','Chr','Start','End','Strand']
+        saf_df['Start'] = saf_df['Start'] - win + 1
+        saf_df['End'] = saf_df['End'] + win
         saf_df.to_csv(args.temp,index = False, sep = '\t')
         if args.multiple == True:
             print('### counting with mutlipe-mapped reads')
