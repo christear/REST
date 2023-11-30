@@ -14,6 +14,7 @@ import pandas as pd
 from utils.Cluster import callCluster, mergeCluster
 from utils.PAS_utils import relabelPred, annotatePAS
 from utils.Data_process import data_preprocessing
+from utils.PAS_utils import calPAU, calWULI 
 
 def call_cluster_main(args):
     print(f'[INFO] call cluster based on {args.input_file}')
@@ -35,6 +36,21 @@ def annotate_PAS_main(args):
         header = args.with_header
     annotatePAS(args.input_pas,args.gtf,args.output,header,args.distance)
 
+def calcu_PAS_main(args):
+    counts_txt = args.pas_count
+    pas_anno = args.pas_anno
+    output = args.output
+    method = args.method
+    pas_type = args.pas_type
+    if 'PAU' in method or 'pau' in method:
+        print('[INFO] calculate PAS usage (PAU)')
+        pau_df = calPAU(counts_txt,pas_anno,output,pas_type)
+    elif 'WULI' in method or 'wuli' in method:
+        print('[INFO] calculate weighted 3\' UTR length index')
+        wuli_df = calWULI(counts_txt,pas_anno,output)
+    else:
+        print(f'[Error] {method} has not be defined')
+        
 def count_PAS_main(args):
     bam = args.bam
     data_type = args.data_type
@@ -299,7 +315,7 @@ if __name__ == '__main__':
     annotate_PAS.add_argument('--distance',default = 24, type = int, help = 'distance to define overlap')
     annotate_PAS.set_defaults(func = annotate_PAS_main)
     
-    #subfunction: count_PAS: for more options need to rewrite the code 
+    # subfunction: count_PAS: count the number of supporting read for each PAS from 3'end-seq data, more options need to rewrite the code 
     count_PAS = subparsers.add_parser('count_PAS', help = 'count reads supporting each PAS from bam file')
     count_PAS.add_argument('--bam', required = True, help = 'bam file of 3\'-end sequencing data or single-cell sequencing data')
     count_PAS.add_argument('--data_type', default = 'bulk', help = 'the type of bam data, either bulk or sc(scRNA-seq)')
@@ -313,6 +329,15 @@ if __name__ == '__main__':
     count_PAS.add_argument('--multiple',default = False, help = 'count multi-mapping reads or not')
     count_PAS.add_argument('--thread',default = 1, help = 'number of the threads')
     count_PAS.set_defaults(func = count_PAS_main)
+    
+    #subfunction: calcu_PAS: calculate PAS usage (PAU) and weighted 3'UTR length index (WULI)
+    calcu_PAS = subparsers.add_parser('calcu_PAS', help = 'calculate PAS usage (PAU) and weighted 3\' UTR length index')
+    calcu_PAS.add_argument('--pas_count', required = True, help = 'txt file with read counts of each PAS output from featureCounts')
+    calcu_PAS.add_argument('--method', default = 'PAU', help = 'method for the calculation, either PAU or WULI')
+    calcu_PAS.add_argument('--pas_anno', required = True, help = 'file of PAS annotation in bed-like format')
+    calcu_PAS.add_argument('--pas_type', default = 'last_exon,intron_anno,intron_unanno,ups_exon', help = 'types of PAS used for calculating')
+    calcu_PAS.add_argument('--output', default = 'pau.txt', help = 'the output of PAU or WULI')
+    calcu_PAS.set_defaults(func = calcu_PAS_main)
     
     #
     if len(sys.argv) < 2:
