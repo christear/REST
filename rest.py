@@ -331,7 +331,7 @@ if __name__ == '__main__':
     count_PAS.set_defaults(func = count_PAS_main)
     
     #subfunction: calcu_PAS: calculate PAS usage (PAU) and weighted 3'UTR length index (WULI)
-    calcu_PAS = subparsers.add_parser('calcu_PAS', help = 'calculate PAS usage (PAU) and weighted 3\' UTR length index')
+    calcu_PAS = subparsers.add_parser('calcu_PAS', help = 'calculate PAS usage (PAU) or the weighted 3\' UTR length index')
     calcu_PAS.add_argument('--pas_count', required = True, help = 'txt file with read counts of each PAS output from featureCounts')
     calcu_PAS.add_argument('--method', default = 'PAU', help = 'method for the calculation, either PAU or WULI')
     calcu_PAS.add_argument('--pas_anno', required = True, help = 'file of PAS annotation in bed-like format')
