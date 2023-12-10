@@ -14,7 +14,8 @@ import pandas as pd
 from utils.Cluster import callCluster, mergeCluster
 from utils.PAS_utils import relabelPred, annotatePAS
 from utils.Data_process import data_preprocessing
-from utils.PAS_utils import calPAU, calWULI 
+from utils.PAS_utils import calPAU, calWULI
+from utils.PAS_utils import get_gene
 
 def call_cluster_main(args):
     print(f'[INFO] call cluster based on {args.input_file}')
@@ -51,6 +52,42 @@ def calcu_PAS_main(args):
     else:
         print(f'[Error] {method} has not be defined')
         
+from utils.PAS_utils import get_gene
+
+# based on pas count and pas annotation to aggregate PAS count for each gene 
+# def countGene (pas_count,pas_anno,output):
+def count_gene_main (args):
+    print('[INFO] aggregate PAS count for each gene ')
+    pas_count = args.pas_count
+    pas_anno = args.pas_anno
+    output = args.output
+    select_types = args.pas_type
+    pc_df = pd.read_csv(pas_count,sep = '\t',comment = '#')
+    annopas_df = pd.read_csv(pas_anno,header = None,sep = '\t')
+    #select_types = 'last_exon,intron_anno,intron_unanno,ups_exon'
+    genepas_df = annopas_df[annopas_df.iloc[:,6].isin(select_types.split(','))].copy()
+    genepas_df['genes'] = genepas_df.iloc[:,9].apply(get_gene,sep = ':')
+    ugenes = genepas_df['genes'].unique()
+    gene_count = []
+    i = 1
+    for each_gene in ugenes:
+        if i % 1000 == 0:
+            print(f'### proccessed {i} genes')
+        pas = genepas_df[genepas_df['genes'] == each_gene].iloc[:,3]
+        each_count = pc_df[pc_df.iloc[:,0].isin(pas)].copy()
+        dat = each_count.iloc[:,6:each_count.shape[1]]
+        #each_out = pd.DataFrame()
+        #each_out['gene'] = each_gene
+        each_gc = dat.sum(axis = 0)
+        gene_count.append(each_gc)
+        i += 1
+        #
+    gc_df = pd.DataFrame({'genes':ugenes})
+    gc_df = pd.concat([gc_df,pd.DataFrame(gene_count)],axis = 1)
+    if output != None:
+        gc_df.to_csv(output,sep = '\t',index = False)
+    return gc_df
+    
 def count_PAS_main(args):
     bam = args.bam
     data_type = args.data_type
@@ -329,6 +366,14 @@ if __name__ == '__main__':
     count_PAS.add_argument('--multiple',default = False, help = 'count multi-mapping reads or not')
     count_PAS.add_argument('--thread',default = 1, help = 'number of the threads')
     count_PAS.set_defaults(func = count_PAS_main)
+    
+    # subfunction: count_gene: aggerate count of PAS for each gene  
+    count_gene = subparsers.add_parser('count_gene', help = 'count reads for each gene based on PAS count and annotation')
+    count_gene.add_argument('--pas_count', required = True, help = 'file of PAS count from count_PAS function')
+    count_gene.add_argument('--pas_anno', required = True, help = 'file of PAS annotation from annotate_PAS function')
+    count_gene.add_argument('--pas_type', default = 'last_exon,intron_anno,intron_unanno,ups_exon,ncRNA', help = 'types of PAS used for calculating')
+    count_gene.add_argument('--output', default = 'pas.count', help = 'the output PAS with read count')
+    count_gene.set_defaults(func = count_gene_main)
     
     #subfunction: calcu_PAS: calculate PAS usage (PAU) and weighted 3'UTR length index (WULI)
     calcu_PAS = subparsers.add_parser('calcu_PAS', help = 'calculate PAS usage (PAU) or the weighted 3\' UTR length index')

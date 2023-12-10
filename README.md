@@ -59,6 +59,8 @@ The REST includes several key functions (some are still under development/debugg
 4. annotate_PAS: annotate PAS with a gene annotation GTF file as described in a previous study[3].
 
 5. count_PAS: count the number of supporting reads for each PAS from bam file. The bam file could be bulk 3\'-end sequencing data or scRNA-seq data. 
+
+6. count_gene: count the read number for each gene by aggregating counts of PAS from the corresponding gene 
  
 6. calculate PAS usage (PAU) or weighted 3' UTR length index (WULI) as mentioned in the previous study[3].
 #### 3. Tutorial
@@ -88,7 +90,10 @@ The details of each function are shown below.
 	b. SC-seq data (under development/debug)
 	- `python rest.py count_PAS --bam [bam.file] --data_type sc --pas [pas.file] --output [output.count] --strand [0/1/2] --win [24] --end [5/3] --thread 20`
 
-6. APA analyis (under development)
+6. count the reads for each gene by aggregating count of PAS
+	- `python count_gene --pas_count [pas.count.file] --pas_anno [pas.anno.file] --output [output.gene.count] --pas_type [last_exon,intron_anno,intron_unanno,ups_exon,ncRNA]`
+
+7. APA analyis (under development)
 	
 	a. calculate PAS usage (PAU) for each PAS 
 	- `python rest.py cal_pau -i [input.count.tab] -c [condition.file] -o [output.apa.events] -a [condition.a] -b [condition.b]`
