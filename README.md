@@ -91,18 +91,19 @@ The details of each function are shown below.
 	- `python rest.py count_PAS --bam [bam.file] --data_type sc --pas [pas.file] --output [output.count] --strand [0/1/2] --win [24] --end [5/3] --thread 20`
 
 6. count the reads for each gene by aggregating count of PAS
-	- `python count_gene --pas_count [pas.count.file] --pas_anno [pas.anno.file] --output [output.gene.count] --pas_type [last_exon,intron_anno,intron_unanno,ups_exon,ncRNA]`
+	- `python rest.py count_gene --pas_count [pas.count.file] --pas_anno [pas.anno.file] --output [output.gene.count] --pas_type [last_exon,intron_anno,intron_unanno,ups_exon,ncRNA]`
 
 7. APA analyis (under development)
 	
 	a. calculate PAS usage (PAU) for each PAS 
 	- `python rest.py cal_pau -i [input.count.tab] -c [condition.file] -o [output.apa.events] -a [condition.a] -b [condition.b]`
 	
-	a. calculate weighted 3' UTR length index (WULI)  
+	a. calculate weighted 3' UTR length index (WULI) as described in previous study.  
 	- `python rest.py cal_wuli -i [input.count.tab] -c [condition.file] -o [output.apa.events] -a [condition.a] -b [condition.b]`
 
 #### 4. The output
-Output of each functions usally in a bed-like format, except the 'retrain' option in filter_cluster will output a directory contains the fine-tuned DNABERT model (PASBERT), inlcuding several files named as:config.json, pytorch_model.bin, special_tokens_map.json, tokenizer_config.json, training_args.bin, vocab.txt.  
+Output of each functions usally in a bed-like format, except that the 'retrain' option in 'filter_cluster' will output a directory contains the fine-tuned DNABERT model (PASBERT), inlcuding several files named as:\
+config.json, pytorch_model.bin, special_tokens_map.json, tokenizer_config.json, training_args.bin, vocab.txt.  
 
 #### 5. Reference
 1. Hoque, M., Ji, Z., Zheng, D., Luo, W., Li, W., You, B., ... & Tian, B. (2013). Analysis of alternative cleavage and polyadenylation by 3′ region extraction and deep sequencing. Nature methods, 10(2), 133-139. 
