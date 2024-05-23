@@ -80,7 +80,7 @@ The details of each function are shown below.
 3. merge the cluster passed PASBERT filtering from multiple samples
 	- `python rest.py merge_cluster --file_list [file1.txt,file2.txt,file3.txt...] --read 5 --sam_num 2 --distance 25 --output [merged.pas.txt]`
 
-4. annotate the putative PAS based on gene annotation in GTF format 
+4. annotate the putative PAS based on gene annotation in GTF format[3]. 
 	- `python rest.py annotate_PAS --input_pas pas_file --gtf annotation_gtf --output output --header`
 	
 5. count the sequencing reads for each putative PAS
@@ -98,7 +98,7 @@ The details of each function are shown below.
 	a. calculate PAS usage (PAU) for each PAS 
 	- `python rest.py cal_pau -i [input.count.tab] -c [condition.file] -o [output.apa.events] -a [condition.a] -b [condition.b]`
 	
-	a. calculate weighted 3' UTR length index (WULI) as described in previous study.  
+	a. calculate weighted 3' UTR length index (WULI) as described in previous study[3].  
 	- `python rest.py cal_wuli -i [input.count.tab] -c [condition.file] -o [output.apa.events] -a [condition.a] -b [condition.b]`
 
 #### 4. The output
