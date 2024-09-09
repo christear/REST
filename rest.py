@@ -297,6 +297,79 @@ def filter_cluster_main(args):
         print(f'[INFO] prediction saved to {out_dir}/prediction.tsv')
         print('[INFO] finished process prediction result')
         #
+    elif run=='retrain':
+        # make prediction first and then finetune the model by relabeling the prediction
+        print('[INFO] start retrain pipeline')
+        print(f'[INFO] save files to retrain folder {out_dir}')
+        #retrain_path=out_dir
+        os.system(f'mkdir -p {out_dir}')
+        initial_pred=f'{out_dir}/ini_pred'
+        if os.path.isfile(f'{initial_pred}/dev.tsv'):
+            print(f'[INFO] using the existing prediction from {initial_pred}')
+        else:
+            os.system(f'mkdir -p {initial_pred}')
+            bed_seq_df.to_csv(f'{initial_pred}/dev.tsv',index=False,sep='\t')
+            print('[INFO] start prediction')
+            os.system(f'python {DNABERT_path}/run_finetune.py \
+                    --model_type dna \
+                    --tokenizer_name=dna{kmer} \
+                    --model_name_or_path {init_model} \
+                    --task_name dnaprom \
+                    --do_predict \
+                    --data_dir {initial_pred}  \
+                    --max_seq_length {max_seq_len} \
+                    --per_gpu_pred_batch_size={batch_size}   \
+                    --output_dir {init_model} \
+                    --predict_dir {initial_pred} \
+                    --n_process {n_process}')
+            print(f'[INFO] finished initial prediction under: {initial_pred}')
+            print('[INFO] start process prediction result')
+            _pred=np.load(f'{initial_pred}/pred_results.npy')
+            threshold=0.5
+            _pred01=np.int8(_pred>=threshold)
+            pas_bed_df['pred_value'] = _pred
+            pas_bed_df['pred_01'] = _pred01
+            pas_bed_df.to_csv(f'{initial_pred}/prediction.tsv',index = False, sep = '\t')
+            print(f'[INFO] prediction saved to {initial_pred}/prediction.tsv')
+            print('[INFO] finished process prediction result')
+        #
+        print('[INFO] start relabel')
+        data=pd.read_csv(f'{initial_pred}/dev.tsv',sep='\t')
+        pred_df = pd.read_csv(f'{initial_pred}/prediction.tsv',sep = '\t')
+        
+        data['pred_value']=pred_df['pred_value']
+        data['pred_01']=pred_df['pred_01']
+        data.to_csv(f'{initial_pred}/pred.tsv',index=False,sep='\t')
+        relabel_data = relabelPred(f'{initial_pred}/pred.tsv',motif_file,f'{initial_pred}/pred.relabeled.tsv')
+        print('[INFO] finished relabel')
+        ft_path = f'{out_dir}/finetune_model'
+        os.system(f'mkdir -p {ft_path}')
+        relabel_data=relabel_data.loc[:,['sequence','relabel','info']]
+        relabel_data.columns=['sequence', 'label', 'info']
+        relabel_data.to_csv(f'{ft_path}/train.tsv',sep='\t',index=False)
+        #
+        print('[INFO] finetune the model')
+        os.system(f'python {DNABERT_path}/run_finetune.py \
+            --model_type dna \
+            --tokenizer_name=dna{kmer} \
+            --model_name_or_path {init_model} \
+            --task_name dnaprom \
+            --do_train \
+            --data_dir {ft_path} \
+            --max_seq_length {max_seq_len} \
+            --per_gpu_eval_batch_size={batch_size}   \
+            --per_gpu_train_batch_size={batch_size}   \
+            --learning_rate 2e-4 \
+            --num_train_epochs {train_epoch} \
+            --output_dir {ft_path} \
+            --save_steps 4000 \
+            --warmup_percent 0.1 \
+            --hidden_dropout_prob 0.1 \
+            --overwrite_output \
+            --weight_decay 0.01 \
+            --n_process {n_process}')
+        print(f'[INFO] finish finetune model under: {ft_path}')
+        
 
 ### main function 
 if __name__ == '__main__':
@@ -314,7 +387,7 @@ if __name__ == '__main__':
     
     # subfunction: filter_cluster
     filter_cluster = subparsers.add_parser('filter_cluster', help = 'filter cluster and fine-tuned DNABERT models for true/false PAS')
-    filter_cluster.add_argument('--run', default = 'pred', help = 'pred/train: only predict true/false for fintering, or also train a fine-tuned model')
+    filter_cluster.add_argument('--run', default = 'pred', help = 'pred/train/retrain: only predict true/false for fintering, or also train a fine-tuned model')
     filter_cluster.add_argument('--input_file', required = True, help = 'input file of cluster in bed-like format')
     filter_cluster.add_argument('--rounds', type = int, default = 5, help = 'rounds of the training, eg: 5')
     filter_cluster.add_argument('--model', default='model/5-new-12w-0', help='eg: /active_r0_m5-0, default=model/5-new-12w-0')

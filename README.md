@@ -4,7 +4,7 @@ REST: a RNA 3'End Sequencing data analysis Toolkit.
 
 #### 0. Prerequisites
 
-- Python 3.6
+- Python >= 3.6
 - BEDTOOLS
 - DNABERT (https://github.com/jerryji1993/DNABERT)
 - featureCounts (only required for count)
@@ -84,6 +84,7 @@ The details of each function are shown below.
 	- `python rest.py annotate_PAS --input_pas pas_file --gtf annotation_gtf --output output --header`
 	
 5. count the sequencing reads for each putative PAS
+
 	a. bulk RNA-seq data 
 	- `python rest.py count_PAS --bam [bam.file] --data_type bulk --pas [pas.file] --output [output.count] --strand [0/1/2] --win [24] --end [5/3] --thread 20`
 	
