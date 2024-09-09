@@ -43,6 +43,7 @@ def calcu_PAS_main(args):
     output = args.output
     method = args.method
     pas_type = args.pas_type
+    pos = args.pos
     if 'PAU' in method or 'pau' in method:
         print('[INFO] calculate PAS usage (PAU)')
         pau_df = calPAU(counts_txt,pas_anno,output,pas_type)
@@ -452,6 +453,7 @@ if __name__ == '__main__':
     calcu_PAS = subparsers.add_parser('calcu_PAS', help = 'calculate PAS usage (PAU) or the weighted 3\' UTR length index')
     calcu_PAS.add_argument('--pas_count', required = True, help = 'txt file with read counts of each PAS output from featureCounts')
     calcu_PAS.add_argument('--method', default = 'PAU', help = 'method for the calculation, either PAU or WULI')
+    calcu_PAS.add_argument('--pos', default = 'start', help = 'position of the last exon to calculate WULI, either start or mid')
     calcu_PAS.add_argument('--pas_anno', required = True, help = 'file of PAS annotation in bed-like format')
     calcu_PAS.add_argument('--pas_type', default = 'last_exon,intron_anno,intron_unanno,ups_exon', help = 'types of PAS used for calculating')
     calcu_PAS.add_argument('--output', default = 'pau.txt', help = 'the output of PAU or WULI')
