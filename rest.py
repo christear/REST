@@ -49,7 +49,7 @@ def calcu_PAS_main(args):
         pau_df = calPAU(counts_txt,pas_anno,output,pas_type)
     elif 'WULI' in method or 'wuli' in method:
         print('[INFO] calculate weighted 3\' UTR length index')
-        wuli_df = calWULI(counts_txt,pas_anno,output)
+        wuli_df = calWULI(counts_txt,pas_anno,output,pos = pos)
     else:
         print(f'[Error] {method} has not be defined')
         
