@@ -12,11 +12,11 @@
 #sentencepiece==0.1.91
 #
 ### additional requirements for REST
-numpy
-pysam
-portion=2.3.0
-gtfparse=1.0.7
-#also works for gtfparse=2.0.1
+# numpy installed
+# pysam installed 
+portion==2.3.0
+gtfparse
+#works for gtfparse=2.0.1 and grfparse=1.0.7
 cigar
 #progressbar
 

@@ -16,18 +16,21 @@ To run REST, plese install DNABERT firstly with the below codes, indeally under 
 `conda create -n rest python=3.6` \
 `conda activate rest` \
 `conda install pytorch torchvision cudatoolkit=10.0 -c pytorch` \
+if the conda install takes too long time, please try \
+`pip install torch` # it works with torch=1.10.2=pypi_0 \ 
 to run with GPU, please use this for pytorch \
 `conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia` 
 
 Download DNABERT with GitHub or manually \
 `git clone https://github.com/jerryji1993/DNABERT.git` \
 `cd DNABERT` \
-`python3 -m pip install --editable . ` \
+`python3 -m pip install --editable . ` or `pip install --editable . --ignore-intsalled certifi` if certifi got errors\
 please use the dnabert.requirements.txt rather than the one under DNABERT/examples \
-`python3 -m pip install -r ../dnabert.requirements.txt`
+`python3 -m pip install -r ../dnabert.requirements.txt` or `pip install -r ../dnabert.requirements.txt` \
+`cd ..`\ 
 
 After sucessfuly install of DNABERT, install other required packages for REST \
-`python3 -m pip install -r requirements.txt`
+`python3 -m pip install -r requirements.txt` or `pip install -r requirements.txt`
 
 To retrain the model (PASBERT) for polyadenylation site (PAS) analysis , please download the initial pretrained DNABERT model as mentioned in (https://github.com/jerryji1993/DNABERT)
 
