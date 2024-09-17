@@ -28,7 +28,7 @@ Download DNABERT with GitHub or manually \
 `python3 -m pip install --editable . ` or `pip install --editable . --ignore-intsalled certifi` if certifi got errors\
 please use the dnabert.requirements.txt rather than the one under DNABERT/examples \
 `python3 -m pip install -r ../dnabert.requirements.txt` or `pip install -r ../dnabert.requirements.txt` \
-`cd ..`\ 
+`cd ..`
 
 After sucessfuly install of DNABERT, install other required packages for REST \
 `python3 -m pip install -r requirements.txt` or `pip install -r requirements.txt`
