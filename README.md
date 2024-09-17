@@ -17,7 +17,7 @@ To run REST, plese install DNABERT firstly with the below codes, indeally under 
 `conda activate rest` \
 `conda install pytorch torchvision cudatoolkit=10.0 -c pytorch` \
 if the conda install takes too long time, please try \
-`pip install torch` it works with torch=1.10.2=pypi_0 \
+`pip install torch` it works with torch=1.10.2=pypi_0
 
 to run with GPU, please use this for pytorch \
 `conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia` 
