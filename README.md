@@ -2,6 +2,8 @@
 
 REST: a RNA 3'End Sequencing data analysis Toolkit. 
 
+![REST](https://github.com/christear/REST/blob/main/images/REST.jpg)
+
 #### 0. Prerequisites
 
 - Python >= 3.6
