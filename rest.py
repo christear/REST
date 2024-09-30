@@ -155,6 +155,9 @@ def filter_cluster_main(args):
     motif_file=args.motif_file
     #
     DNABERT_path = args.DNABERT_path
+    if DNABERT_path is None:
+        #repo_root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        DNABERT_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),'/DNABERT/examples')
     out_dir = args.out_dir
     strand = args.strand
     distance = args.distance
@@ -168,7 +171,7 @@ def filter_cluster_main(args):
     #
     flank_len = int(max_seq_len/2)
     bed_seq_df,pas_bed_df = data_preprocessing(input_file,flank_len,strand,reference,kmer,distance,annotation)
-    print([input_file,flank_len,strand,reference,kmer,distance,annotation])
+    #print([input_file,flank_len,strand,reference,kmer,distance,annotation])
     print('[INFO] finished data processing')
     #
     if run=='train':
@@ -380,7 +383,7 @@ if __name__ == '__main__':
     # subfunction: call_cluster
     call_cluster = subparsers.add_parser('call_cluster', help='call cluster based on the alignment bam/bed file')
     call_cluster.add_argument('--input_file', required=True, help = 'input file in bam or bed format')
-    call_cluster.add_argument('--input_format', default = 'bed', help = 'format of the input file')
+    call_cluster.add_argument('--input_format', default = 'bed', help = 'format of the input file, default: bed')
     call_cluster.add_argument('--strand', type = int, default = 2, help = 'strand of the sequencing data that generate the input file. 1: forward strand, 2: reverse strand, 0: strandless')
     call_cluster.add_argument('--output', default = 'tmp.cluster', help = 'output file of the identified cluster')
     call_cluster.add_argument('--output_dis', default = 'tmp.dis', help = 'distance of the output cluster')
@@ -398,7 +401,7 @@ if __name__ == '__main__':
     filter_cluster.add_argument('--max_seq_len',type=int,default=200,help='eg: 200, default=200')
     filter_cluster.add_argument('--n_process',type=int,default=100,help='number of processors, eg: 100, default=100')
     filter_cluster.add_argument('--motif_file',default='mouse.PAS.motif',help='path to motif file, default=mouse.PAS.motif')
-    filter_cluster.add_argument('--DNABERT_path',default='DNABERT/examples', help='path to DNABERT script, default=DNABERT/examples')
+    filter_cluster.add_argument('--DNABERT_path',default=None, help='path to DNABERT script, default=DNABERT/examples')
     filter_cluster.add_argument('--out_dir',default='test_out', help='directory for output, default=test_out')
     filter_cluster.add_argument('--strand',type = int,default=1, help='strand of the cluster, 1: forward strand, 2; reverse strand, 0: strandless')
     filter_cluster.add_argument('--distance',default=50, help='distance threshold to define the overlap with annotation, default = 50')
