@@ -23,11 +23,14 @@ if the conda install takes too long time, please try \
 
 to run with GPU, please use this for pytorch \
 `conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia` 
+if conda install takes too long or get conflict, please try 
+`pip install typing-extensions` \
+`pip install torch==1.10.1+cu113 torchvision==0.11.2+cu113 torchaudio==0.10.1 -f https://download.pytorch.org/whl/cu113/torch_stable.html` \
 
 Download DNABERT with GitHub or manually \
 `git clone https://github.com/jerryji1993/DNABERT.git` \
 `cd DNABERT` \
-`python3 -m pip install --editable . ` or `pip install --editable . --ignore-intsalled certifi` if certifi got errors\
+`python3 -m pip install --editable . ` or `pip install --editable . --ignore-installed certifi` if certifi got errors\
 please use the dnabert.requirements.txt rather than the one under DNABERT/examples \
 `python3 -m pip install -r ../dnabert.requirements.txt` or `pip install -r ../dnabert.requirements.txt` \
 `cd ..`

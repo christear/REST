@@ -157,7 +157,7 @@ def filter_cluster_main(args):
     DNABERT_path = args.DNABERT_path
     if DNABERT_path is None:
         #repo_root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        DNABERT_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),'/DNABERT/examples')
+        DNABERT_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),'DNABERT/examples')
     out_dir = args.out_dir
     strand = args.strand
     distance = args.distance
